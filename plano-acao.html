@@ -311,6 +311,16 @@
     background:var(--red-bg); color:var(--red); font-size:16px; font-weight:700;
     cursor:pointer; margin-top:2px;
   }
+  .pdf-header{
+    display:flex; align-items:center; gap:14px;
+    background:#fff; border-radius:14px; padding:14px 18px;
+    box-shadow:0 4px 16px rgba(20,10,30,.06);
+    margin-bottom:16px;
+  }
+  .pdf-header img{height:34px; display:block;}
+  .pdf-header-eyebrow{font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--pink);}
+  .pdf-header-titulo{font-family:'Poppins',sans-serif; font-weight:700; font-size:15px; margin-top:2px;}
+  .pdf-header-data{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
   .plano-col-titulo{font-size:10.5px; font-weight:700; text-transform:uppercase; color:var(--ink-soft); letter-spacing:.05em; margin-bottom:4px;}
 
   #btnAdicionarLinha{
@@ -368,6 +378,15 @@
 
       <div id="pdfArea">
 
+        <div class="pdf-header" id="pdfHeader">
+          <img src="" alt="Somos Educação" id="pdfLogo">
+          <div class="pdf-header-txt">
+            <div class="pdf-header-eyebrow">Painel Comercial · Somos Educação</div>
+            <div class="pdf-header-titulo">Fotografia de Performance + Plano de Ação</div>
+            <div class="pdf-header-data" id="pdfData"></div>
+          </div>
+        </div>
+
         <div class="recap-card" id="recapFotografia">
           <div class="recap-head">
             <div class="recap-nomes">
@@ -382,6 +401,9 @@
           <div class="kpi-row" id="blocoIndividual"></div>
         </div>
 
+        <p class="secao-titulo" style="margin-top:22px;">Comparado a Regional × Nacional</p>
+        <div class="comp-grid" id="blocoComparativo"></div>
+
         <p class="secao-titulo" style="margin-top:22px;">Plano de Ação</p>
         <div id="linhasPlano"></div>
         <button id="btnAdicionarLinha" onclick="adicionarLinha()">+ Adicionar linha</button>
@@ -393,6 +415,7 @@
         <button class="botao-primario" id="btnPdf" onclick="gerarPdf()">Gerar PDF (fotografia + plano)</button>
       </div>
       <p class="status-line" id="statusPlano"></p>
+
 
     </div>
 
@@ -486,9 +509,33 @@ function kpiCard(container, label, valorPct){
   container.appendChild(div);
 }
 
+function comparativoCard(container, label, regValor, nacValor){
+  const stReg = classificarRatio(regValor);
+  const stNac = classificarRatio(nacValor);
+  const pctReg = Math.min(Math.max(regValor,0), 2) / 2 * 100;
+  const pctNac = Math.min(Math.max(nacValor,0), 2) / 2 * 100;
+  const div = document.createElement('div');
+  div.className = 'comp-card';
+  div.innerHTML = `
+    <div class="comp-titulo">${label}</div>
+    <div class="comp-lado">
+      <div class="comp-lado-head"><span class="nome">Regional</span><span class="valor">${(regValor*100).toFixed(0)}%</span></div>
+      <div class="comp-track"><div class="comp-centro"></div><div class="comp-fill ${stReg}" style="width:${pctReg}%"></div></div>
+    </div>
+    <div class="comp-lado">
+      <div class="comp-lado-head"><span class="nome">Nacional</span><span class="valor">${(nacValor*100).toFixed(0)}%</span></div>
+      <div class="comp-track"><div class="comp-centro"></div><div class="comp-fill ${stNac}" style="width:${pctNac}%"></div></div>
+    </div>`;
+  container.appendChild(div);
+}
+
 function renderizarRecap(){
   document.getElementById('recapConsultor').textContent = consultor;
   document.getElementById('recapGerente').textContent = 'Gerente: ' + gestor;
+
+  const logoTopbar = document.querySelector('.logo-chip img');
+  if(logoTopbar) document.getElementById('pdfLogo').src = logoTopbar.src;
+  document.getElementById('pdfData').textContent = consultor + ' · ' + new Date().toLocaleDateString('pt-BR');
 
   const blocoIndividual = document.getElementById('blocoIndividual');
   blocoIndividual.innerHTML = '';
@@ -499,6 +546,16 @@ function renderizarRecap(){
   kpiCard(blocoIndividual, '% Conv. Result. (Qtd)', ind.pctConvResultadoQtd);
   kpiCard(blocoIndividual, '% Conv. Result. (R$)', ind.pctConvResultadoRs);
   kpiCard(blocoIndividual, '% Meta Anual', ind.pctMetaAnual);
+
+  const blocoComparativo = document.getElementById('blocoComparativo');
+  blocoComparativo.innerHTML = '';
+  const reg = diagnostico.regional, nac = diagnostico.nacional;
+  comparativoCard(blocoComparativo, 'Escolas Visitadas', reg.escolasVisitas, nac.escolasVisitas);
+  comparativoCard(blocoComparativo, 'Proposta', reg.proposta, nac.proposta);
+  comparativoCard(blocoComparativo, 'Contratos Emitidos', reg.contratosEmitidos, nac.contratosEmitidos);
+  comparativoCard(blocoComparativo, 'Contratos Assinados', reg.contratosAssinados, nac.contratosAssinados);
+  comparativoCard(blocoComparativo, 'Conversão', reg.conversao, nac.conversao);
+  comparativoCard(blocoComparativo, 'Meta', reg.meta, nac.meta);
 
   const mediaMeta = (diagnostico.regional.meta + diagnostico.nacional.meta) / 2;
   const veredito = document.getElementById('veredito');
