@@ -404,6 +404,9 @@
         <p class="secao-titulo" style="margin-top:22px;">Comparado a Regional × Nacional</p>
         <div class="comp-grid" id="blocoComparativo"></div>
 
+        <p class="secao-titulo" style="margin-top:22px;">Gap de Cobertura</p>
+        <div class="gap-grid" id="blocoGap"></div>
+
         <p class="secao-titulo" style="margin-top:22px;">Plano de Ação</p>
         <div id="linhasPlano"></div>
         <button id="btnAdicionarLinha" onclick="adicionarLinha()">+ Adicionar linha</button>
@@ -509,6 +512,21 @@ function kpiCard(container, label, valorPct){
   container.appendChild(div);
 }
 
+function gapCard(container, label, valor, cor, corBg){
+  const div = document.createElement('div');
+  div.className = 'gap-card';
+  div.innerHTML = `
+    <div class="icon-badge" style="background:${corBg};color:${cor};">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="txt"><div class="lbl">${label}</div><div class="val">${formatarNumero(valor)}</div></div>`;
+  container.appendChild(div);
+}
+
+function formatarNumero(v){
+  return Number(v).toLocaleString('pt-BR', {maximumFractionDigits:2});
+}
+
 function comparativoCard(container, label, regValor, nacValor){
   const stReg = classificarRatio(regValor);
   const stNac = classificarRatio(nacValor);
@@ -556,6 +574,14 @@ function renderizarRecap(){
   comparativoCard(blocoComparativo, 'Contratos Assinados', reg.contratosAssinados, nac.contratosAssinados);
   comparativoCard(blocoComparativo, 'Conversão', reg.conversao, nac.conversao);
   comparativoCard(blocoComparativo, 'Meta', reg.meta, nac.meta);
+
+  const blocoGap = document.getElementById('blocoGap');
+  blocoGap.innerHTML = '';
+  const gap = diagnostico.gap;
+  gapCard(blocoGap, 'Gap Visitas (Regional)', gap.visitasRegional, 'var(--blue)', 'var(--blue-bg)');
+  gapCard(blocoGap, 'Gap Visitas (Nacional)', gap.visitasNacional, 'var(--purple)', 'var(--purple-bg)');
+  gapCard(blocoGap, 'Gap c/ Cresc. (Regional)', gap.visitasRegionalCrescimento, 'var(--orange)', 'var(--orange-bg)');
+  gapCard(blocoGap, 'Gap c/ Cresc. (Nacional)', gap.visitasNacionalCrescimento, 'var(--red)', 'var(--red-bg)');
 
   const mediaMeta = (diagnostico.regional.meta + diagnostico.nacional.meta) / 2;
   const veredito = document.getElementById('veredito');
