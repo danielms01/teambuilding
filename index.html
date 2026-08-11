@@ -300,12 +300,12 @@
     </div>
 
     <div class="secao-resultado">
-      <h2>Comparado ao Regional (1.0x = na régua)</h2>
+      <h2>Comparado ao Regional (100% = na régua)</h2>
       <div id="blocoRegional"></div>
     </div>
 
     <div class="secao-resultado">
-      <h2>Comparado ao Nacional (1.0x = na régua)</h2>
+      <h2>Comparado ao Nacional (100% = na régua)</h2>
       <div id="blocoNacional"></div>
     </div>
 
@@ -398,7 +398,7 @@ function metricaRatio(container, label, valor){
   const div = document.createElement('div');
   div.className = 'metrica';
   div.innerHTML = `
-    <div class="metrica-topo"><span class="nome">${label}</span><span class="valor">${valor.toFixed(2)}x</span></div>
+    <div class="metrica-topo"><span class="nome">${label}</span><span class="valor">${(valor*100).toFixed(0)}%</span></div>
     <div class="metrica-track">
       <div class="metrica-centro"></div>
       <div class="metrica-fill ${status}" style="width:${pctLargura}%"></div>
