@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de Rota — Calculadora de Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDE3CF;
+    --paper-2:#F5EEDC;
+    --ink:#22301F;
+    --ink-soft:#5B6355;
+    --route:#2B4C6F;
+    --route-soft:#DCE4EA;
+    --ok:#3B7A4E;
+    --ok-bg:#E1EBE3;
+    --atencao:#B8791E;
+    --atencao-bg:#F2E5CE;
+    --risco:#A63D2F;
+    --risco-bg:#F1DDD8;
+    --linha:#C9BFA0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      repeating-linear-gradient(transparent, transparent 27px, var(--linha) 28px);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    padding:20px 14px 72px;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+
+  /* ---------- cabeçalho tipo talão ---------- */
+  .ticket-head{
+    background:var(--paper-2);
+    border:1px solid var(--ink);
+    border-radius:2px;
+    padding:18px 20px 16px;
+    position:relative;
+    margin-bottom:18px;
+  }
+  .ticket-head::before, .ticket-head::after{
+    content:"";
+    position:absolute;
+    top:-1px; bottom:-1px;
+    width:14px;
+    background-image: radial-gradient(circle at center, var(--paper) 3px, transparent 3.5px);
+    background-size: 14px 16px;
+  }
+  .ticket-head::before{left:-7px;}
+  .ticket-head::after{right:-7px;}
+  .eyebrow{
+    font-family:'Special Elite', monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--route);
+  }
+  h1{
+    font-family:'Special Elite', monospace;
+    font-size:21px;
+    font-weight:400;
+    letter-spacing:.01em;
+    margin:4px 0 0;
+  }
+  .subline{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+
+  .status-line{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin:10px 0 4px;
+  }
+  .status-line.erro{color:var(--risco);font-weight:600;}
+
+  /* ---------- seleção ---------- */
+  .selecao{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .campo label{
+    display:block;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  select, input{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--linha);
+    border-radius:2px;
+    background:#fff;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    color:var(--ink);
+  }
+  select:disabled, input:disabled{opacity:.5;}
+  select:focus, input:focus{outline:2px solid var(--route);outline-offset:1px;}
+
+  /* ---------- paradas / cards de input ---------- */
+  #cardsInput{display:none;}
+  .parada{
+    background:#fff;
+    border:1px solid var(--linha);
+    border-radius:2px;
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .parada .titulo{
+    font-family:'Special Elite', monospace;
+    font-size:13px;
+    color:var(--route);
+    margin:0 0 12px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .parada .titulo .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    background:var(--route-soft);
+    color:var(--route);
+    padding:2px 6px;
+    border-radius:2px;
+  }
+  .parada .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .campo{margin-bottom:8px;}
+
+  button#btnGerar{
+    width:100%;
+    padding:14px;
+    background:var(--ink);
+    color:var(--paper-2);
+    border:none;
+    border-radius:2px;
+    font-family:'Special Elite', monospace;
+    font-size:14px;
+    letter-spacing:.04em;
+    cursor:pointer;
+    margin-top:4px;
+  }
+  button#btnGerar:disabled{opacity:.5;}
+
+  /* ---------- resultado ---------- */
+  #resultado{display:none;margin-top:20px;}
+  .carimbo{
+    width:150px;height:150px;
+    border:3px double currentColor;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-family:'Special Elite', monospace;
+    font-size:16px;
+    line-height:1.3;
+    transform:rotate(-6deg);
+    margin:8px auto 22px;
+    padding:10px;
+  }
+  .carimbo.ok{color:var(--ok);}
+  .carimbo.atencao{color:var(--atencao);}
+  .carimbo.risco{color:var(--risco);}
+
+  .secao-resultado{margin-bottom:22px;}
+  .secao-resultado h2{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--ink-soft);
+    border-bottom:1px solid var(--linha);
+    padding-bottom:6px;
+    margin:0 0 12px;
+  }
+
+  .metrica{margin-bottom:10px;}
+  .metrica-topo{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    margin-bottom:3px;
+  }
+  .metrica-topo .nome{color:var(--ink-soft);}
+  .metrica-topo .valor{font-family:'IBM Plex Mono',monospace;font-weight:600;}
+  .metrica-track{
+    position:relative;
+    height:8px;
+    background:var(--route-soft);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .metrica-fill{
+    position:absolute; top:0; left:0; bottom:0;
+    border-radius:4px;
+  }
+  .metrica-fill.ok{background:var(--ok);}
+  .metrica-fill.atencao{background:var(--atencao);}
+  .metrica-fill.risco{background:var(--risco);}
+  .metrica-centro{
+    position:absolute; top:-2px; bottom:-2px; left:50%;
+    width:2px; background:var(--ink);
+    opacity:.55;
+  }
+  .metrica-track.simples .metrica-fill{background:var(--route);}
+
+  .gap-linha{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--linha);
+  }
+  .gap-linha .nome{color:var(--ink-soft);}
+  .gap-linha .valor{font-family:'IBM Plex Mono',monospace;font-weight:600;}
+
+  @media (max-width:480px){
+    .selecao, .parada .grid2{grid-template-columns:1fr;}
+    .carimbo{width:130px;height:130px;font-size:14px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="ticket-head">
+    <div class="eyebrow">Somos Educação · Ficha de Rota</div>
+    <h1>Calculadora de Performance</h1>
+    <div class="subline">Selecione gerente e consultor, registre os números do ciclo e receba o diagnóstico da parada.</div>
+
+    <p class="status-line" id="loadingMsg">Carregando lista de gerentes...</p>
+    <p class="status-line erro" id="erroCarregamento" style="display:none;"></p>
+
+    <div class="selecao">
+      <div class="campo">
+        <label for="selectGerente">Gerente</label>
+        <select id="selectGerente" disabled>
+          <option value="">Carregando...</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="selectConsultor">Consultor</label>
+        <select id="selectConsultor" disabled>
+          <option value="">Selecione o gerente</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="cardsInput">
+
+    <div class="parada">
+      <p class="titulo"><span class="num">01</span> Carteira &amp; visitas</p>
+      <div class="grid2">
+        <div class="campo"><label for="carteira">Carteira (escolas)</label><input id="carteira" type="number"></div>
+        <div class="campo"><label for="escolasVisitadas">Escolas visitadas</label><input id="escolasVisitadas" type="number"></div>
+      </div>
+    </div>
+
+    <div class="parada">
+      <p class="titulo"><span class="num">02</span> Propostas</p>
+      <div class="grid2">
+        <div class="campo"><label for="propostasQtd">Qtd</label><input id="propostasQtd" type="number"></div>
+        <div class="campo"><label for="propostasRs">R$</label><input id="propostasRs" type="number" step="0.01"></div>
+      </div>
+    </div>
+
+    <div class="parada">
+      <p class="titulo"><span class="num">03</span> Contratos emitidos</p>
+      <div class="grid2">
+        <div class="campo"><label for="contratosQtd">Qtd</label><input id="contratosQtd" type="number"></div>
+        <div class="campo"><label for="contratosRs">R$</label><input id="contratosRs" type="number" step="0.01"></div>
+      </div>
+    </div>
+
+    <div class="parada">
+      <p class="titulo"><span class="num">04</span> Resultado &amp; meta</p>
+      <div class="grid2">
+        <div class="campo"><label for="resultadoQtd">Resultado Qtd</label><input id="resultadoQtd" type="number"></div>
+        <div class="campo"><label for="resultadoRs">Resultado R$</label><input id="resultadoRs" type="number" step="0.01"></div>
+      </div>
+      <div class="campo"><label for="metaAnual">Meta anual (R$)</label><input id="metaAnual" type="number" step="0.01"></div>
+    </div>
+
+    <button id="btnGerar" onclick="gerarDiagnostico()">Carimbar diagnóstico</button>
+    <p class="status-line" id="loadingEnvio" style="display:none;">Calculando e salvando...</p>
+    <p class="status-line erro" id="erroEnvio" style="display:none;"></p>
+  </div>
+
+  <div id="resultado">
+    <div class="carimbo" id="carimboVeredito">NO RITMO</div>
+
+    <div class="secao-resultado">
+      <h2>Individual</h2>
+      <div id="blocoIndividual"></div>
+    </div>
+
+    <div class="secao-resultado">
+      <h2>Comparado ao Regional (1.0x = na régua)</h2>
+      <div id="blocoRegional"></div>
+    </div>
+
+    <div class="secao-resultado">
+      <h2>Comparado ao Nacional (1.0x = na régua)</h2>
+      <div id="blocoNacional"></div>
+    </div>
+
+    <div class="secao-resultado">
+      <h2>Gap de visitas</h2>
+      <div id="blocoGap"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// COLE AQUI a URL do Apps Script implantado (termina em /exec)
+// ============================================================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA-Ou4BX6K-eQ2A7IbpcmMIo5yhTggVS27eLnJw79SXQuLm2-yhjqbSYbM2Vtih1wpjQ/exec";
+
+let equipesData = {};
+
+document.addEventListener('DOMContentLoaded', carregarEquipes);
+
+async function carregarEquipes(){
+  const loadingMsg = document.getElementById('loadingMsg');
+  const erroEl = document.getElementById('erroCarregamento');
+  if(!SCRIPT_URL || SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwA-Ou4BX6K-eQ2A7IbpcmMIo5yhTggVS27eLnJw79SXQuLm2-yhjqbSYbM2Vtih1wpjQ/exec"){
+    loadingMsg.style.display = 'none';
+    erroEl.style.display = 'block';
+    erroEl.textContent = 'SCRIPT_URL não configurada no código. Cole a URL do Apps Script antes de usar.';
+    return;
+  }
+  try{
+    const resp = await fetch(SCRIPT_URL);
+    const json = await resp.json();
+    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao carregar equipes');
+    equipesData = json.equipes;
+
+    const selectGerente = document.getElementById('selectGerente');
+    selectGerente.innerHTML = '<option value="">Selecione o gerente</option>';
+    Object.keys(equipesData).sort().forEach(function(gerente){
+      const opt = document.createElement('option');
+      opt.value = gerente;
+      opt.textContent = gerente;
+      selectGerente.appendChild(opt);
+    });
+    selectGerente.disabled = false;
+    loadingMsg.style.display = 'none';
+  }catch(err){
+    loadingMsg.style.display = 'none';
+    erroEl.style.display = 'block';
+    erroEl.textContent = 'Falha ao carregar a lista de gerentes/consultores: ' + err.message;
+  }
+}
+
+document.getElementById('selectGerente').addEventListener('change', function(){
+  const gerente = this.value;
+  const selectConsultor = document.getElementById('selectConsultor');
+  selectConsultor.innerHTML = '';
+  document.getElementById('cardsInput').style.display = 'none';
+  document.getElementById('resultado').style.display = 'none';
+
+  if(!gerente){
+    selectConsultor.innerHTML = '<option value="">Selecione o gerente</option>';
+    selectConsultor.disabled = true;
+    return;
+  }
+  selectConsultor.innerHTML = '<option value="">Selecione o consultor</option>';
+  (equipesData[gerente] || []).sort().forEach(function(consultor){
+    const opt = document.createElement('option');
+    opt.value = consultor;
+    opt.textContent = consultor;
+    selectConsultor.appendChild(opt);
+  });
+  selectConsultor.disabled = false;
+});
+
+document.getElementById('selectConsultor').addEventListener('change', function(){
+  document.getElementById('resultado').style.display = 'none';
+  document.getElementById('cardsInput').style.display = this.value ? 'block' : 'none';
+});
+
+function classificarRatio(v){
+  if(v >= 1) return 'ok';
+  if(v >= 0.8) return 'atencao';
+  return 'risco';
+}
+
+function metricaRatio(container, label, valor){
+  const status = classificarRatio(valor);
+  const pctLargura = Math.min(Math.max(valor,0), 2) / 2 * 100;
+  const div = document.createElement('div');
+  div.className = 'metrica';
+  div.innerHTML = `
+    <div class="metrica-topo"><span class="nome">${label}</span><span class="valor">${valor.toFixed(2)}x</span></div>
+    <div class="metrica-track">
+      <div class="metrica-centro"></div>
+      <div class="metrica-fill ${status}" style="width:${pctLargura}%"></div>
+    </div>`;
+  container.appendChild(div);
+}
+
+function metricaSimples(container, label, valor){
+  const pct = Math.min(Math.max(valor,0),1) * 100;
+  const div = document.createElement('div');
+  div.className = 'metrica';
+  div.innerHTML = `
+    <div class="metrica-topo"><span class="nome">${label}</span><span class="valor">${(valor*100).toFixed(1)}%</span></div>
+    <div class="metrica-track simples"><div class="metrica-fill" style="width:${pct}%"></div></div>`;
+  container.appendChild(div);
+}
+
+function linhaGap(container, label, valor){
+  const div = document.createElement('div');
+  div.className = 'gap-linha';
+  div.innerHTML = `<span class="nome">${label}</span><span class="valor">${formatarNumero(valor)}</span>`;
+  container.appendChild(div);
+}
+
+function formatarNumero(v){
+  return Number(v).toLocaleString('pt-BR', {maximumFractionDigits:2});
+}
+
+async function gerarDiagnostico(){
+  const gestor = document.getElementById('selectGerente').value;
+  const consultor = document.getElementById('selectConsultor').value;
+  if(!gestor || !consultor){
+    alert('Selecione gerente e consultor antes de continuar.');
+    return;
+  }
+
+  const payload = {
+    gestor: gestor,
+    consultor: consultor,
+    carteira: document.getElementById('carteira').value,
+    escolasVisitadas: document.getElementById('escolasVisitadas').value,
+    propostasQtd: document.getElementById('propostasQtd').value,
+    propostasRs: document.getElementById('propostasRs').value,
+    contratosQtd: document.getElementById('contratosQtd').value,
+    contratosRs: document.getElementById('contratosRs').value,
+    resultadoQtd: document.getElementById('resultadoQtd').value,
+    resultadoRs: document.getElementById('resultadoRs').value,
+    metaAnual: document.getElementById('metaAnual').value
+  };
+
+  const btn = document.getElementById('btnGerar');
+  const loadingEnvio = document.getElementById('loadingEnvio');
+  const erroEnvio = document.getElementById('erroEnvio');
+  btn.disabled = true;
+  loadingEnvio.style.display = 'block';
+  erroEnvio.style.display = 'none';
+
+  try{
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain'},
+      body: JSON.stringify(payload)
+    });
+    const json = await resp.json();
+    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao calcular');
+
+    renderizarDiagnostico(json);
+    document.getElementById('resultado').style.display = 'block';
+    document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
+  }catch(err){
+    erroEnvio.style.display = 'block';
+    erroEnvio.textContent = 'Falha ao gerar/salvar diagnóstico: ' + err.message;
+  }finally{
+    btn.disabled = false;
+    loadingEnvio.style.display = 'none';
+  }
+}
+
+function renderizarDiagnostico(json){
+  const ind = json.individual, reg = json.regional, nac = json.nacional, gap = json.gap;
+
+  const blocoIndividual = document.getElementById('blocoIndividual');
+  blocoIndividual.innerHTML = '';
+  metricaSimples(blocoIndividual, '% Escolas Visitadas', ind.pctEscolasVisitadas);
+  metricaSimples(blocoIndividual, '% Conv. Propostas', ind.pctConvPropostas);
+  metricaSimples(blocoIndividual, '% Conv. Contratos', ind.pctConvContratos);
+  metricaSimples(blocoIndividual, '% Conv. Resultado (Qtd)', ind.pctConvResultadoQtd);
+  metricaSimples(blocoIndividual, '% Conv. Resultado (R$)', ind.pctConvResultadoRs);
+  metricaSimples(blocoIndividual, '% Meta Anual', ind.pctMetaAnual);
+
+  const blocoRegional = document.getElementById('blocoRegional');
+  blocoRegional.innerHTML = '';
+  metricaRatio(blocoRegional, 'Escolas Visitadas', reg.escolasVisitas);
+  metricaRatio(blocoRegional, 'Proposta', reg.proposta);
+  metricaRatio(blocoRegional, 'Contratos Emitidos', reg.contratosEmitidos);
+  metricaRatio(blocoRegional, 'Contratos Assinados', reg.contratosAssinados);
+  metricaRatio(blocoRegional, 'Conversão', reg.conversao);
+  metricaRatio(blocoRegional, 'Meta', reg.meta);
+
+  const blocoNacional = document.getElementById('blocoNacional');
+  blocoNacional.innerHTML = '';
+  metricaRatio(blocoNacional, 'Escolas Visitadas', nac.escolasVisitas);
+  metricaRatio(blocoNacional, 'Proposta', nac.proposta);
+  metricaRatio(blocoNacional, 'Contratos Emitidos', nac.contratosEmitidos);
+  metricaRatio(blocoNacional, 'Contratos Assinados', nac.contratosAssinados);
+  metricaRatio(blocoNacional, 'Conversão', nac.conversao);
+  metricaRatio(blocoNacional, 'Meta', nac.meta);
+
+  const blocoGap = document.getElementById('blocoGap');
+  blocoGap.innerHTML = '';
+  linhaGap(blocoGap, 'Gap de visitas (Regional)', gap.visitasRegional);
+  linhaGap(blocoGap, 'Gap de visitas (Nacional)', gap.visitasNacional);
+  linhaGap(blocoGap, 'Gap c/ crescimento (Regional)', gap.visitasRegionalCrescimento);
+  linhaGap(blocoGap, 'Gap c/ crescimento (Nacional)', gap.visitasNacionalCrescimento);
+
+  // veredito = média dos ratios de Meta (Regional + Nacional)
+  const mediaMeta = (reg.meta + nac.meta) / 2;
+  const carimbo = document.getElementById('carimboVeredito');
+  carimbo.className = 'carimbo';
+  if(mediaMeta >= 1){
+    carimbo.classList.add('ok');
+    carimbo.textContent = 'NO RITMO';
+  } else if(mediaMeta >= 0.8){
+    carimbo.classList.add('atencao');
+    carimbo.textContent = 'ATENÇÃO NA ROTA';
+  } else {
+    carimbo.classList.add('risco');
+    carimbo.textContent = 'ABAIXO DA ROTA';
+  }
+}
+</script>
+</body>
+</html>
