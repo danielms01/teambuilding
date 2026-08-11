@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', carregarEquipes);
 async function carregarEquipes(){
   const loadingMsg = document.getElementById('loadingMsg');
   const erroEl = document.getElementById('erroCarregamento');
-  if(!SCRIPT_URL || SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwA-Ou4BX6K-eQ2A7IbpcmMIo5yhTggVS27eLnJw79SXQuLm2-yhjqbSYbM2Vtih1wpjQ/exec"){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('script.google.com') === -1){
     loadingMsg.style.display = 'none';
     erroEl.style.display = 'block';
     erroEl.textContent = 'SCRIPT_URL não configurada no código. Cole a URL do Apps Script antes de usar.';
