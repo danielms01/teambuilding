@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Performance — Somos Educação</title>
+<title>Plano de Ação — Somos Educação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -243,6 +243,88 @@
   @media (max-width:420px){
     .kpi-row{grid-template-columns:repeat(2, 1fr);}
   }
+
+  /* ---------------- específico da Página 2 ---------------- */
+  .aviso-card{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 6px 24px rgba(20,10,30,.08);
+    padding:26px 22px;
+    text-align:center;
+  }
+  .aviso-card .txt{color:var(--ink-soft); font-size:14px; margin:10px 0 16px;}
+  .aviso-card a{
+    display:inline-block;
+    background:var(--pink); color:#fff; text-decoration:none;
+    font-family:'Poppins',sans-serif; font-weight:600; font-size:13.5px;
+    padding:11px 20px; border-radius:9px;
+  }
+
+  .recap-card{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 6px 20px rgba(20,10,30,.08);
+    padding:18px 20px;
+    margin-bottom:20px;
+  }
+  .recap-head{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+  .recap-nomes{font-family:'Poppins',sans-serif; font-weight:700; font-size:15px;}
+  .recap-nomes span{color:var(--ink-soft); font-weight:500; font-size:12.5px; display:block; margin-top:1px;}
+
+  .plano-linha{
+    background:var(--card);
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(20,10,30,.05);
+    padding:14px 16px;
+    margin-bottom:10px;
+    display:grid;
+    grid-template-columns:28px 1fr 1fr 30px;
+    gap:10px;
+    align-items:start;
+  }
+  .plano-linha .num{
+    width:28px;height:28px;border-radius:50%;
+    background:var(--purple-bg); color:var(--purple);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:2px;
+  }
+  .plano-linha textarea{
+    width:100%; resize:vertical; min-height:44px;
+    padding:9px 10px; border:1.5px solid var(--line); border-radius:8px;
+    font-family:'Inter',sans-serif; font-size:13.5px; color:var(--ink);
+  }
+  .plano-linha textarea:focus{outline:none; border-color:var(--pink);}
+  .plano-linha .remover{
+    width:30px;height:30px;border-radius:8px;border:none;
+    background:var(--red-bg); color:var(--red); font-size:16px; font-weight:700;
+    cursor:pointer; margin-top:2px;
+  }
+  .plano-col-titulo{font-size:10.5px; font-weight:700; text-transform:uppercase; color:var(--ink-soft); letter-spacing:.05em; margin-bottom:4px;}
+
+  #btnAdicionarLinha{
+    width:100%; padding:12px; margin-bottom:18px;
+    border:1.5px dashed var(--line); border-radius:10px; background:transparent;
+    color:var(--ink-soft); font-family:'Poppins',sans-serif; font-weight:600; font-size:13px;
+    cursor:pointer;
+  }
+  #btnAdicionarLinha:hover{border-color:var(--pink); color:var(--pink);}
+
+  .acoes-botoes{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:6px;}
+  .botao-secundario, .botao-primario{
+    padding:14px; border:none; border-radius:11px;
+    font-family:'Poppins',sans-serif; font-weight:600; font-size:13.5px;
+    cursor:pointer;
+  }
+  .botao-secundario{background:#fff; color:var(--ink); border:1.5px solid var(--line);}
+  .botao-primario{background:linear-gradient(100deg, var(--dark1) 0%, var(--dark2) 55%, var(--pink) 130%); color:#fff; box-shadow:0 6px 18px rgba(225,20,126,.28);}
+  .botao-secundario:disabled, .botao-primario:disabled{opacity:.5; cursor:default;}
+
+  @media (max-width:560px){
+    .plano-linha{grid-template-columns:1fr; }
+    .plano-linha .num{display:none;}
+    .acoes-botoes{grid-template-columns:1fr;}
+  }
 </style>
 </head>
 <body>
@@ -252,12 +334,12 @@
       <div class="logo-chip"><img src="data:image/png;base64,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" alt="Somos Educação"></div>
       <div class="topbar-titles">
         <div class="topbar-eyebrow">Painel Comercial · Liderança</div>
-        <div class="topbar-title">Calculadora de Performance</div>
-        <div class="topbar-sub">Selecione gerente e consultor, registre os números do ciclo e veja o diagnóstico.</div>
+        <div class="topbar-title">Plano de Ação</div>
+        <div class="topbar-sub">Ações e iscas de campo para evoluir a performance do ciclo.</div>
       </div>
       <div class="topbar-nav">
-        <a href="index.html" class="ativo">Performance</a>
-        <a href="plano-acao.html">Plano de Ação</a>
+        <a href="index.html">Performance</a>
+        <a href="plano-acao.html" class="ativo">Plano de Ação</a>
         <a href="dicionario.html">Dicionário</a>
       </div>
     </div>
@@ -265,178 +347,77 @@
 
   <div class="wrap">
 
-    <div class="card-filtros">
-      <p class="status-line" id="loadingMsg">Carregando lista de gerentes...</p>
-      <p class="status-line erro" id="erroCarregamento" style="display:none;"></p>
-      <div class="filtros-grid">
-        <div class="campo">
-          <label for="selectGerente">Gerente</label>
-          <select id="selectGerente" disabled><option value="">Carregando...</option></select>
-        </div>
-        <div class="campo">
-          <label for="selectConsultor">Consultor</label>
-          <select id="selectConsultor" disabled><option value="">Selecione o gerente</option></select>
-        </div>
-      </div>
+    <div id="semDados" class="aviso-card" style="display:none;">
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:16px;">Nenhuma fotografia recente encontrada</div>
+      <div class="txt">Gere o diagnóstico de performance na Página 1 primeiro — o Plano de Ação e o PDF usam esses dados.</div>
+      <a href="index.html">Ir para Performance</a>
     </div>
 
-    <div id="cardsInput">
-      <p class="secao-titulo">Dados do ciclo</p>
-      <div class="paradas-grid">
+    <div id="conteudoPlano" style="display:none;">
 
-        <div class="parada">
-          <div class="parada-head">
-            <div class="icon-badge" style="background:var(--blue-bg);color:var(--blue);">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6-9 6-9-6z"/><path d="M3 10v6l9 6 9-6v-6"/></svg>
+      <div id="pdfArea">
+
+        <div class="recap-card" id="recapFotografia">
+          <div class="recap-head">
+            <div class="recap-nomes">
+              <span id="recapConsultor">—</span>
+              <span id="recapGerente">Gerente —</span>
             </div>
-            <div class="titulo">Carteira &amp; visitas</div>
+            <div class="veredito" id="veredito" style="padding:10px 16px; margin:0;">
+              <div class="ic" id="veredicoIcone" style="width:32px;height:32px;"></div>
+              <div class="txt"><div class="rotulo" id="veredictoTexto" style="font-size:13.5px;">—</div></div>
+            </div>
           </div>
-          <div class="grid2">
-            <div class="campo"><label for="carteira">Carteira (escolas)</label><input id="carteira" type="number"></div>
-            <div class="campo"><label for="escolasVisitadas">Escolas visitadas</label><input id="escolasVisitadas" type="number"></div>
-          </div>
+          <div class="kpi-row" id="blocoIndividual"></div>
         </div>
 
-        <div class="parada">
-          <div class="parada-head">
-            <div class="icon-badge" style="background:var(--purple-bg);color:var(--purple);">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12l3 3 6-6"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
-            </div>
-            <div class="titulo">Propostas</div>
-          </div>
-          <div class="grid2">
-            <div class="campo"><label for="propostasQtd">Qtd</label><input id="propostasQtd" type="number"></div>
-            <div class="campo"><label for="propostasRs">R$</label><input id="propostasRs" type="number" step="0.01"></div>
-          </div>
-        </div>
-
-        <div class="parada">
-          <div class="parada-head">
-            <div class="icon-badge" style="background:var(--green-bg);color:var(--green);">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/></svg>
-            </div>
-            <div class="titulo">Contratos emitidos</div>
-          </div>
-          <div class="grid2">
-            <div class="campo"><label for="contratosQtd">Qtd</label><input id="contratosQtd" type="number"></div>
-            <div class="campo"><label for="contratosRs">R$</label><input id="contratosRs" type="number" step="0.01"></div>
-          </div>
-        </div>
-
-        <div class="parada">
-          <div class="parada-head">
-            <div class="icon-badge" style="background:var(--orange-bg);color:var(--orange);">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/></svg>
-            </div>
-            <div class="titulo">Resultado &amp; meta</div>
-          </div>
-          <div class="grid2">
-            <div class="campo"><label for="resultadoQtd">Resultado Qtd</label><input id="resultadoQtd" type="number"></div>
-            <div class="campo"><label for="resultadoRs">Resultado R$</label><input id="resultadoRs" type="number" step="0.01"></div>
-          </div>
-          <div class="campo" style="margin-top:10px;"><label for="metaAnual">Meta anual (R$)</label><input id="metaAnual" type="number" step="0.01"></div>
-        </div>
+        <p class="secao-titulo" style="margin-top:22px;">Plano de Ação</p>
+        <div id="linhasPlano"></div>
+        <button id="btnAdicionarLinha" onclick="adicionarLinha()">+ Adicionar linha</button>
 
       </div>
 
-      <button id="btnGerar" onclick="gerarDiagnostico()">Gerar diagnóstico</button>
-      <p class="status-line" id="loadingEnvio" style="display:none;">Calculando e salvando...</p>
-      <p class="status-line erro" id="erroEnvio" style="display:none;"></p>
-    </div>
-
-    <div id="resultado">
-
-      <div class="veredito" id="veredito">
-        <div class="ic" id="veredicoIcone"></div>
-        <div class="txt">
-          <div class="rotulo" id="veredictoTexto">NO RITMO</div>
-          <div class="desc" id="veredictoDesc">Média de atingimento de meta vs. Regional/Nacional</div>
-        </div>
+      <div class="acoes-botoes">
+        <button class="botao-secundario" id="btnSalvar" onclick="salvarPlano()">Salvar plano na planilha</button>
+        <button class="botao-primario" id="btnPdf" onclick="gerarPdf()">Gerar PDF (fotografia + plano)</button>
       </div>
-
-      <p class="secao-titulo">Individual</p>
-      <div class="kpi-row" id="blocoIndividual"></div>
-
-      <p class="secao-titulo">Comparado a Regional × Nacional</p>
-      <div class="comp-grid" id="blocoComparativo"></div>
-
-      <p class="secao-titulo">Gap de visitas</p>
-      <div class="gap-grid" id="blocoGap"></div>
-
-      <a href="plano-acao.html" id="linkPlanoAcao" style="display:block; text-align:center; margin-top:22px; padding:14px; border-radius:11px; background:var(--pink); color:#fff; text-decoration:none; font-family:'Poppins',sans-serif; font-weight:600; font-size:14px;">Ir para o Plano de Ação →</a>
+      <p class="status-line" id="statusPlano"></p>
 
     </div>
 
   </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// ============================================================
-// COLE AQUI a URL do Apps Script implantado (termina em /exec)
-// ============================================================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA-Ou4BX6K-eQ2A7IbpcmMIo5yhTggVS27eLnJw79SXQuLm2-yhjqbSYbM2Vtih1wpjQ/exec";
 
-let equipesData = {};
+let diagnostico = null;
+let gestor = '';
+let consultor = '';
+let contadorLinhas = 0;
 
-document.addEventListener('DOMContentLoaded', carregarEquipes);
+document.addEventListener('DOMContentLoaded', function(){
+  carregarFotografia();
+});
 
-async function carregarEquipes(){
-  const loadingMsg = document.getElementById('loadingMsg');
-  const erroEl = document.getElementById('erroCarregamento');
-  if(!SCRIPT_URL || SCRIPT_URL.indexOf('script.google.com') === -1){
-    loadingMsg.style.display = 'none';
-    erroEl.style.display = 'block';
-    erroEl.textContent = 'SCRIPT_URL não configurada no código. Cole a URL do Apps Script antes de usar.';
-    return;
-  }
+function carregarFotografia(){
   try{
-    const resp = await fetch(SCRIPT_URL);
-    const json = await resp.json();
-    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao carregar equipes');
-    equipesData = json.equipes;
-
-    const selectGerente = document.getElementById('selectGerente');
-    selectGerente.innerHTML = '<option value="">Selecione o gerente</option>';
-    Object.keys(equipesData).sort().forEach(function(gerente){
-      const opt = document.createElement('option');
-      opt.value = gerente;
-      opt.textContent = gerente;
-      selectGerente.appendChild(opt);
-    });
-    selectGerente.disabled = false;
-    loadingMsg.style.display = 'none';
-  }catch(err){
-    loadingMsg.style.display = 'none';
-    erroEl.style.display = 'block';
-    erroEl.textContent = 'Falha ao carregar a lista de gerentes/consultores: ' + err.message;
+    const raw = localStorage.getItem('somos_diagnostico');
+    gestor = localStorage.getItem('somos_gestor') || '';
+    consultor = localStorage.getItem('somos_consultor') || '';
+    if(!raw || !gestor || !consultor){
+      document.getElementById('semDados').style.display = 'block';
+      return;
+    }
+    diagnostico = JSON.parse(raw);
+    document.getElementById('conteudoPlano').style.display = 'block';
+    renderizarRecap();
+    adicionarLinha(); // começa com 1 linha
+  }catch(e){
+    document.getElementById('semDados').style.display = 'block';
   }
 }
-
-document.getElementById('selectGerente').addEventListener('change', function(){
-  const gerente = this.value;
-  const selectConsultor = document.getElementById('selectConsultor');
-  selectConsultor.innerHTML = '';
-  document.getElementById('cardsInput').style.display = 'none';
-  document.getElementById('resultado').style.display = 'none';
-
-  if(!gerente){
-    selectConsultor.innerHTML = '<option value="">Selecione o gerente</option>';
-    selectConsultor.disabled = true;
-    return;
-  }
-  selectConsultor.innerHTML = '<option value="">Selecione o consultor</option>';
-  (equipesData[gerente] || []).sort().forEach(function(consultor){
-    const opt = document.createElement('option');
-    opt.value = consultor;
-    opt.textContent = consultor;
-    selectConsultor.appendChild(opt);
-  });
-  selectConsultor.disabled = false;
-});
-
-document.getElementById('selectConsultor').addEventListener('change', function(){
-  document.getElementById('resultado').style.display = 'none';
-  document.getElementById('cardsInput').style.display = this.value ? 'block' : 'none';
-});
 
 function classificarRatio(v){
   if(v >= 1) return 'ok';
@@ -451,103 +432,13 @@ function kpiCard(container, label, valorPct){
   container.appendChild(div);
 }
 
-function comparativoCard(container, label, regValor, nacValor){
-  const stReg = classificarRatio(regValor);
-  const stNac = classificarRatio(nacValor);
-  const pctReg = Math.min(Math.max(regValor,0), 2) / 2 * 100;
-  const pctNac = Math.min(Math.max(nacValor,0), 2) / 2 * 100;
-  const div = document.createElement('div');
-  div.className = 'comp-card';
-  div.innerHTML = `
-    <div class="comp-titulo">${label}</div>
-    <div class="comp-lado">
-      <div class="comp-lado-head"><span class="nome">Regional</span><span class="valor">${(regValor*100).toFixed(0)}%</span></div>
-      <div class="comp-track"><div class="comp-centro"></div><div class="comp-fill ${stReg}" style="width:${pctReg}%"></div></div>
-    </div>
-    <div class="comp-lado">
-      <div class="comp-lado-head"><span class="nome">Nacional</span><span class="valor">${(nacValor*100).toFixed(0)}%</span></div>
-      <div class="comp-track"><div class="comp-centro"></div><div class="comp-fill ${stNac}" style="width:${pctNac}%"></div></div>
-    </div>`;
-  container.appendChild(div);
-}
-
-function gapCard(container, label, valor, cor, corBg){
-  const div = document.createElement('div');
-  div.className = 'gap-card';
-  div.innerHTML = `
-    <div class="icon-badge" style="background:${corBg};color:${cor};">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </div>
-    <div class="txt"><div class="lbl">${label}</div><div class="val">${formatarNumero(valor)}</div></div>`;
-  container.appendChild(div);
-}
-
-function formatarNumero(v){
-  return Number(v).toLocaleString('pt-BR', {maximumFractionDigits:2});
-}
-
-async function gerarDiagnostico(){
-  const gestor = document.getElementById('selectGerente').value;
-  const consultor = document.getElementById('selectConsultor').value;
-  if(!gestor || !consultor){
-    alert('Selecione gerente e consultor antes de continuar.');
-    return;
-  }
-
-  const payload = {
-    gestor: gestor,
-    consultor: consultor,
-    carteira: document.getElementById('carteira').value,
-    escolasVisitadas: document.getElementById('escolasVisitadas').value,
-    propostasQtd: document.getElementById('propostasQtd').value,
-    propostasRs: document.getElementById('propostasRs').value,
-    contratosQtd: document.getElementById('contratosQtd').value,
-    contratosRs: document.getElementById('contratosRs').value,
-    resultadoQtd: document.getElementById('resultadoQtd').value,
-    resultadoRs: document.getElementById('resultadoRs').value,
-    metaAnual: document.getElementById('metaAnual').value
-  };
-
-  const btn = document.getElementById('btnGerar');
-  const loadingEnvio = document.getElementById('loadingEnvio');
-  const erroEnvio = document.getElementById('erroEnvio');
-  btn.disabled = true;
-  loadingEnvio.style.display = 'block';
-  erroEnvio.style.display = 'none';
-
-  try{
-    const resp = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: {'Content-Type':'text/plain'},
-      body: JSON.stringify(payload)
-    });
-    const json = await resp.json();
-    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao calcular');
-
-    renderizarDiagnostico(json);
-    document.getElementById('resultado').style.display = 'block';
-    document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
-
-    // Salva pra Página 2 (Plano de Ação) conseguir puxar a fotografia mais recente
-    try{
-      localStorage.setItem('somos_diagnostico', JSON.stringify(json));
-      localStorage.setItem('somos_gestor', gestor);
-      localStorage.setItem('somos_consultor', consultor);
-    }catch(e){ /* localStorage indisponível — segue sem bloquear a tela */ }
-  }catch(err){
-    erroEnvio.style.display = 'block';
-    erroEnvio.textContent = 'Falha ao gerar/salvar diagnóstico: ' + err.message;
-  }finally{
-    btn.disabled = false;
-    loadingEnvio.style.display = 'none';
-  }
-}
-
-function renderizarDiagnostico(json){
-  const ind = json.individual, reg = json.regional, nac = json.nacional, gap = json.gap;
+function renderizarRecap(){
+  document.getElementById('recapConsultor').textContent = consultor;
+  document.getElementById('recapGerente').textContent = 'Gerente: ' + gestor;
 
   const blocoIndividual = document.getElementById('blocoIndividual');
   blocoIndividual.innerHTML = '';
+  const ind = diagnostico.individual;
   kpiCard(blocoIndividual, '% Escolas Visitadas', ind.pctEscolasVisitadas);
   kpiCard(blocoIndividual, '% Conv. Propostas', ind.pctConvPropostas);
   kpiCard(blocoIndividual, '% Conv. Contratos', ind.pctConvContratos);
@@ -555,23 +446,7 @@ function renderizarDiagnostico(json){
   kpiCard(blocoIndividual, '% Conv. Result. (R$)', ind.pctConvResultadoRs);
   kpiCard(blocoIndividual, '% Meta Anual', ind.pctMetaAnual);
 
-  const blocoComparativo = document.getElementById('blocoComparativo');
-  blocoComparativo.innerHTML = '';
-  comparativoCard(blocoComparativo, 'Escolas Visitadas', reg.escolasVisitas, nac.escolasVisitas);
-  comparativoCard(blocoComparativo, 'Proposta', reg.proposta, nac.proposta);
-  comparativoCard(blocoComparativo, 'Contratos Emitidos', reg.contratosEmitidos, nac.contratosEmitidos);
-  comparativoCard(blocoComparativo, 'Contratos Assinados', reg.contratosAssinados, nac.contratosAssinados);
-  comparativoCard(blocoComparativo, 'Conversão', reg.conversao, nac.conversao);
-  comparativoCard(blocoComparativo, 'Meta', reg.meta, nac.meta);
-
-  const blocoGap = document.getElementById('blocoGap');
-  blocoGap.innerHTML = '';
-  gapCard(blocoGap, 'Gap Visitas (Regional)', gap.visitasRegional, 'var(--blue)', 'var(--blue-bg)');
-  gapCard(blocoGap, 'Gap Visitas (Nacional)', gap.visitasNacional, 'var(--purple)', 'var(--purple-bg)');
-  gapCard(blocoGap, 'Gap c/ Cresc. (Regional)', gap.visitasRegionalCrescimento, 'var(--orange)', 'var(--orange-bg)');
-  gapCard(blocoGap, 'Gap c/ Cresc. (Nacional)', gap.visitasNacionalCrescimento, 'var(--red)', 'var(--red-bg)');
-
-  const mediaMeta = (reg.meta + nac.meta) / 2;
+  const mediaMeta = (diagnostico.regional.meta + diagnostico.nacional.meta) / 2;
   const veredito = document.getElementById('veredito');
   const icone = document.getElementById('veredicoIcone');
   const texto = document.getElementById('veredictoTexto');
@@ -591,6 +466,110 @@ function renderizarDiagnostico(json){
     svgIcone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6"/><path d="M9 9l6 6"/></svg>';
   }
   icone.innerHTML = svgIcone;
+}
+
+function adicionarLinha(){
+  contadorLinhas++;
+  const div = document.createElement('div');
+  div.className = 'plano-linha';
+  div.dataset.linha = contadorLinhas;
+  div.innerHTML = `
+    <div class="num">${contadorLinhas}</div>
+    <div><div class="plano-col-titulo">Ação</div><textarea placeholder="O que o consultor vai fazer..."></textarea></div>
+    <div><div class="plano-col-titulo">Iscas</div><textarea placeholder="Gancho/argumento pra abrir a visita..."></textarea></div>
+    <button class="remover" onclick="this.closest('.plano-linha').remove()">×</button>`;
+  document.getElementById('linhasPlano').appendChild(div);
+}
+
+function coletarLinhas(){
+  const linhas = document.querySelectorAll('.plano-linha');
+  const acoes = [];
+  linhas.forEach(function(linha){
+    const textareas = linha.querySelectorAll('textarea');
+    const acao = textareas[0].value.trim();
+    const isca = textareas[1].value.trim();
+    if(acao || isca) acoes.push({acao: acao, isca: isca});
+  });
+  return acoes;
+}
+
+async function salvarPlano(){
+  const acoes = coletarLinhas();
+  const status = document.getElementById('statusPlano');
+  if(acoes.length === 0){
+    status.className = 'status-line erro';
+    status.textContent = 'Preencha ao menos uma linha antes de salvar.';
+    return;
+  }
+  const btn = document.getElementById('btnSalvar');
+  btn.disabled = true;
+  status.className = 'status-line';
+  status.textContent = 'Salvando...';
+  try{
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain'},
+      body: JSON.stringify({
+        tipo: 'plano',
+        gestor: gestor,
+        consultor: consultor,
+        refDiagnostico: diagnostico.timestamp || '',
+        acoes: acoes
+      })
+    });
+    const json = await resp.json();
+    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao salvar');
+    status.className = 'status-line';
+    status.textContent = '✓ Plano salvo na planilha (' + json.salvos + ' linha(s)).';
+  }catch(err){
+    status.className = 'status-line erro';
+    status.textContent = 'Falha ao salvar: ' + err.message;
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+async function gerarPdf(){
+  const acoes = coletarLinhas();
+  if(acoes.length === 0){
+    alert('Preencha ao menos uma linha do Plano de Ação antes de gerar o PDF.');
+    return;
+  }
+  const btn = document.getElementById('btnPdf');
+  btn.disabled = true;
+  btn.textContent = 'Gerando PDF...';
+  try{
+    const area = document.getElementById('pdfArea');
+    const canvas = await html2canvas(area, {scale:2, backgroundColor:'#F3F4F7'});
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const imgWidth = pageWidth;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while(heightLeft > 0){
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    const nomeArquivo = 'performance-' + (consultor || 'consultor').replace(/\s+/g,'-').toLowerCase() + '.pdf';
+    pdf.save(nomeArquivo);
+
+    // salva o plano também, pra não depender de clique separado
+    await salvarPlano();
+  }catch(err){
+    alert('Falha ao gerar PDF: ' + err.message);
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Gerar PDF (fotografia + plano)';
+  }
 }
 </script>
 </body>

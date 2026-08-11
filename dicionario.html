@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dicionário — Somos Educação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark1:#15111A;
+    --dark2:#5C1148;
+    --pink:#E1147E;
+    --bg:#F3F4F7;
+    --card:#FFFFFF;
+    --ink:#1C1C1E;
+    --ink-soft:#767B87;
+    --line:#E7E8EC;
+    --blue:#2F6FED; --blue-bg:#E8EEFD;
+    --purple:#7C5CFC; --purple-bg:#EFEBFE;
+    --green:#1F9254; --green-bg:#E5F4EA;
+    --orange:#DB8A1F; --orange-bg:#FBF0DD;
+    --red:#D6473F; --red-bg:#FBE7E5;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 18px;}
+
+  /* ---------------- header ---------------- */
+  .topbar{
+    background:linear-gradient(100deg, var(--dark1) 0%, var(--dark2) 55%, var(--pink) 115%);
+    padding:22px 0 30px;
+    margin-bottom:-16px;
+  }
+  .topbar-inner{
+    max-width:920px;margin:0 auto;padding:0 18px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .logo-chip{
+    background:#fff;
+    border-radius:10px;
+    padding:8px 14px;
+    display:flex; align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  .logo-chip img{height:30px;display:block;}
+  .topbar-titles{flex:1; min-width:200px;}
+  .topbar-eyebrow{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#F2A9D2;
+  }
+  .topbar-title{
+    font-family:'Poppins', sans-serif;
+    font-size:24px;
+    font-weight:700;
+    color:#fff;
+    margin:2px 0 0;
+  }
+  .topbar-sub{font-size:12.5px;color:#D9C3D8;margin-top:4px;}
+  .topbar-nav{display:flex; gap:6px; flex-wrap:wrap;}
+  .topbar-nav a{
+    color:#EBD6E6;
+    text-decoration:none;
+    font-size:12.5px;
+    font-weight:600;
+    padding:8px 14px;
+    border-radius:20px;
+    background:rgba(255,255,255,.08);
+    white-space:nowrap;
+  }
+  .topbar-nav a.ativo{background:#fff; color:var(--dark1);}
+
+  /* ---------------- filtro / seleção ---------------- */
+  .card-filtros{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 6px 24px rgba(20,10,30,.08);
+    padding:18px 20px;
+    margin:0 0 20px;
+    position:relative;
+    z-index:2;
+  }
+  .filtros-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .campo label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  select, input{
+    width:100%;
+    padding:11px 12px;
+    border:1.5px solid var(--line);
+    border-radius:9px;
+    background:#fff;
+    font-family:'Inter', sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  select:disabled, input:disabled{opacity:.5;}
+  select:focus, input:focus{outline:none; border-color:var(--pink);}
+  .status-line{font-size:12.5px; color:var(--ink-soft); margin:10px 2px 0;}
+  .status-line.erro{color:var(--red); font-weight:600;}
+
+  /* ---------------- cards de input ---------------- */
+  #cardsInput{display:none;}
+  .secao-titulo{
+    font-family:'Poppins', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin:26px 2px 12px;
+  }
+  .paradas-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:6px;}
+  .parada{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 4px 16px rgba(20,10,30,.06);
+    padding:16px 18px 18px;
+  }
+  .parada-head{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .icon-badge{
+    width:36px;height:36px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .icon-badge svg{width:18px;height:18px;}
+  .parada-head .titulo{font-family:'Poppins',sans-serif; font-weight:600; font-size:14.5px;}
+  .parada .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .campo{margin-bottom:0;}
+
+  button#btnGerar{
+    width:100%;
+    padding:15px;
+    background:linear-gradient(100deg, var(--dark1) 0%, var(--dark2) 55%, var(--pink) 130%);
+    color:#fff;
+    border:none;
+    border-radius:11px;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    letter-spacing:.02em;
+    cursor:pointer;
+    margin-top:18px;
+    box-shadow:0 6px 18px rgba(225,20,126,.28);
+  }
+  button#btnGerar:disabled{opacity:.5; box-shadow:none;}
+
+  /* ---------------- resultado ---------------- */
+  #resultado{display:none;}
+
+  .veredito{
+    border-radius:14px;
+    padding:20px 22px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin:8px 0 8px;
+  }
+  .veredito.ok{background:var(--green-bg); color:var(--green);}
+  .veredito.atencao{background:var(--orange-bg); color:var(--orange);}
+  .veredito.risco{background:var(--red-bg); color:var(--red);}
+  .veredito .ic{
+    width:46px;height:46px;border-radius:50%;
+    background:rgba(255,255,255,.6);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .veredito .ic svg{width:24px;height:24px;}
+  .veredito .txt .rotulo{font-family:'Poppins',sans-serif; font-weight:700; font-size:17px;}
+  .veredito .txt .desc{font-size:12.5px; opacity:.85; margin-top:2px; color:var(--ink-soft);}
+
+  /* KPI row (individual) — uma linha só */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:10px;
+  }
+  .kpi-card{
+    background:var(--card);
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(20,10,30,.06);
+    padding:14px 12px;
+    text-align:left;
+  }
+  .kpi-card .lbl{font-size:10.5px; color:var(--ink-soft); font-weight:600; line-height:1.25; min-height:26px;}
+  .kpi-card .val{font-family:'Poppins',sans-serif; font-size:19px; font-weight:700; color:var(--blue); margin-top:4px;}
+
+  /* comparativo Regional x Nacional lado a lado */
+  .comp-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .comp-card{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 4px 16px rgba(20,10,30,.06);
+    padding:16px 18px;
+  }
+  .comp-card .comp-titulo{font-family:'Poppins',sans-serif; font-weight:600; font-size:13.5px; margin-bottom:12px;}
+  .comp-lado{margin-bottom:12px;}
+  .comp-lado:last-child{margin-bottom:0;}
+  .comp-lado-head{display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px;}
+  .comp-lado-head .nome{color:var(--ink-soft); font-weight:600; text-transform:uppercase; letter-spacing:.03em; font-size:10.5px;}
+  .comp-lado-head .valor{font-family:'IBM Plex Mono',monospace; font-weight:600;}
+  .comp-track{position:relative; height:7px; background:#EEF0F3; border-radius:4px; overflow:hidden;}
+  .comp-fill{position:absolute; top:0; left:0; bottom:0; border-radius:4px;}
+  .comp-fill.ok{background:var(--green);}
+  .comp-fill.atencao{background:var(--orange);}
+  .comp-fill.risco{background:var(--red);}
+  .comp-centro{position:absolute; top:-2px; bottom:-2px; left:50%; width:2px; background:var(--ink); opacity:.35;}
+
+  /* gaps */
+  .gap-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;}
+  .gap-card{
+    background:var(--card);
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(20,10,30,.06);
+    padding:14px 16px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .gap-card .icon-badge{width:34px;height:34px;border-radius:9px;}
+  .gap-card .txt .lbl{font-size:10.5px; color:var(--ink-soft); font-weight:600;}
+  .gap-card .txt .val{font-family:'Poppins',sans-serif; font-weight:700; font-size:16.5px; margin-top:2px;}
+
+  @media (max-width:720px){
+    .filtros-grid, .paradas-grid, .comp-grid, .gap-grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(3, 1fr);}
+    .parada .grid2{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:420px){
+    .kpi-row{grid-template-columns:repeat(2, 1fr);}
+  }
+
+  /* ---------------- específico da Página 3 ---------------- */
+  .busca-dicionario{margin-bottom:18px;}
+  .termo-card{
+    background:var(--card);
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(20,10,30,.06);
+    padding:14px 18px;
+    margin-bottom:10px;
+  }
+  .termo-card .termo{font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; color:var(--pink); margin-bottom:4px;}
+  .termo-card .definicao{font-size:13.5px; color:var(--ink); line-height:1.5;}
+  .termo-card .definicao.pendente{color:var(--ink-soft); font-style:italic;}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="logo-chip"><img src="data:image/png;base64,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" alt="Somos Educação"></div>
+      <div class="topbar-titles">
+        <div class="topbar-eyebrow">Painel Comercial · Liderança</div>
+        <div class="topbar-title">Dicionário</div>
+        <div class="topbar-sub">Glossário de termos comerciais usados no ciclo.</div>
+      </div>
+      <div class="topbar-nav">
+        <a href="index.html">Performance</a>
+        <a href="plano-acao.html">Plano de Ação</a>
+        <a href="dicionario.html" class="ativo">Dicionário</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="card-filtros busca-dicionario">
+      <div class="campo">
+        <label for="buscaTermo">Buscar termo</label>
+        <input id="buscaTermo" type="text" placeholder="Ex: cobertura, F7, Frutas Baixas..." oninput="filtrarTermos()">
+      </div>
+    </div>
+
+    <p class="status-line" id="loadingMsg">Carregando glossário...</p>
+    <p class="status-line erro" id="erroCarregamento" style="display:none;"></p>
+
+    <div id="listaTermos"></div>
+  </div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA-Ou4BX6K-eQ2A7IbpcmMIo5yhTggVS27eLnJw79SXQuLm2-yhjqbSYbM2Vtih1wpjQ/exec";
+
+let todosTermos = [];
+
+document.addEventListener('DOMContentLoaded', carregarDicionario);
+
+async function carregarDicionario(){
+  const loadingMsg = document.getElementById('loadingMsg');
+  const erroEl = document.getElementById('erroCarregamento');
+  try{
+    const resp = await fetch(SCRIPT_URL + '?action=dicionario');
+    const json = await resp.json();
+    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao carregar dicionário');
+    todosTermos = json.termos.sort(function(a,b){ return a.termo.localeCompare(b.termo, 'pt-BR'); });
+    loadingMsg.style.display = 'none';
+    renderizarTermos(todosTermos);
+  }catch(err){
+    loadingMsg.style.display = 'none';
+    erroEl.style.display = 'block';
+    erroEl.textContent = 'Falha ao carregar o dicionário: ' + err.message;
+  }
+}
+
+function renderizarTermos(lista){
+  const container = document.getElementById('listaTermos');
+  container.innerHTML = '';
+  if(lista.length === 0){
+    container.innerHTML = '<p class="status-line">Nenhum termo encontrado.</p>';
+    return;
+  }
+  lista.forEach(function(item){
+    const pendente = !item.definicao || item.definicao.indexOf('DEFINIÇÃO PENDENTE') !== -1;
+    const div = document.createElement('div');
+    div.className = 'termo-card';
+    div.innerHTML = `<div class="termo">${item.termo}</div><div class="definicao ${pendente ? 'pendente' : ''}">${pendente ? 'Definição pendente de cadastro.' : item.definicao}</div>`;
+    container.appendChild(div);
+  });
+}
+
+function filtrarTermos(){
+  const q = document.getElementById('buscaTermo').value.trim().toLowerCase();
+  if(!q){ renderizarTermos(todosTermos); return; }
+  const filtrados = todosTermos.filter(function(item){
+    return item.termo.toLowerCase().indexOf(q) !== -1 || item.definicao.toLowerCase().indexOf(q) !== -1;
+  });
+  renderizarTermos(filtrados);
+}
+</script>
+</body>
+</html>
