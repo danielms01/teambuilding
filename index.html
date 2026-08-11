@@ -3,319 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha de Rota — Calculadora de Performance</title>
+<title>Calculadora de Performance — Somos Educação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#EDE3CF;
-    --paper-2:#F5EEDC;
-    --ink:#22301F;
-    --ink-soft:#5B6355;
-    --route:#2B4C6F;
-    --route-soft:#DCE4EA;
-    --ok:#3B7A4E;
-    --ok-bg:#E1EBE3;
-    --atencao:#B8791E;
-    --atencao-bg:#F2E5CE;
-    --risco:#A63D2F;
-    --risco-bg:#F1DDD8;
-    --linha:#C9BFA0;
+    --dark1:#15111A;
+    --dark2:#5C1148;
+    --pink:#E1147E;
+    --bg:#F3F4F7;
+    --card:#FFFFFF;
+    --ink:#1C1C1E;
+    --ink-soft:#767B87;
+    --line:#E7E8EC;
+    --blue:#2F6FED; --blue-bg:#E8EEFD;
+    --purple:#7C5CFC; --purple-bg:#EFEBFE;
+    --green:#1F9254; --green-bg:#E5F4EA;
+    --orange:#DB8A1F; --orange-bg:#FBF0DD;
+    --red:#D6473F; --red-bg:#FBE7E5;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
-    background:var(--paper);
-    background-image:
-      repeating-linear-gradient(transparent, transparent 27px, var(--linha) 28px);
+    background:var(--bg);
     color:var(--ink);
-    font-family:'IBM Plex Sans', sans-serif;
-    padding:20px 14px 72px;
+    font-family:'Inter', sans-serif;
+    padding-bottom:60px;
   }
-  .wrap{max-width:640px;margin:0 auto;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 18px;}
 
-  /* ---------- cabeçalho tipo talão ---------- */
-  .ticket-head{
-    background:var(--paper-2);
-    border:1px solid var(--ink);
-    border-radius:2px;
-    padding:18px 20px 16px;
-    position:relative;
-    margin-bottom:18px;
+  /* ---------------- header ---------------- */
+  .topbar{
+    background:linear-gradient(100deg, var(--dark1) 0%, var(--dark2) 55%, var(--pink) 115%);
+    padding:22px 0 30px;
+    margin-bottom:-16px;
   }
-  .ticket-head::before, .ticket-head::after{
-    content:"";
-    position:absolute;
-    top:-1px; bottom:-1px;
-    width:14px;
-    background-image: radial-gradient(circle at center, var(--paper) 3px, transparent 3.5px);
-    background-size: 14px 16px;
+  .topbar-inner{
+    max-width:920px;margin:0 auto;padding:0 18px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
   }
-  .ticket-head::before{left:-7px;}
-  .ticket-head::after{right:-7px;}
-  .eyebrow{
-    font-family:'Special Elite', monospace;
+  .logo-chip{
+    background:#fff;
+    border-radius:10px;
+    padding:8px 14px;
+    display:flex; align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  .logo-chip img{height:30px;display:block;}
+  .topbar-titles{flex:1; min-width:200px;}
+  .topbar-eyebrow{
+    font-family:'Inter',sans-serif;
     font-size:11px;
-    letter-spacing:.12em;
+    font-weight:700;
+    letter-spacing:.14em;
     text-transform:uppercase;
-    color:var(--route);
+    color:#F2A9D2;
   }
-  h1{
-    font-family:'Special Elite', monospace;
-    font-size:21px;
-    font-weight:400;
-    letter-spacing:.01em;
-    margin:4px 0 0;
+  .topbar-title{
+    font-family:'Poppins', sans-serif;
+    font-size:24px;
+    font-weight:700;
+    color:#fff;
+    margin:2px 0 0;
   }
-  .subline{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+  .topbar-sub{font-size:12.5px;color:#D9C3D8;margin-top:4px;}
 
-  .status-line{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    color:var(--ink-soft);
-    margin:10px 0 4px;
+  /* ---------------- filtro / seleção ---------------- */
+  .card-filtros{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 6px 24px rgba(20,10,30,.08);
+    padding:18px 20px;
+    margin:0 0 20px;
+    position:relative;
+    z-index:2;
   }
-  .status-line.erro{color:var(--risco);font-weight:600;}
-
-  /* ---------- seleção ---------- */
-  .selecao{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .filtros-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   .campo label{
     display:block;
-    font-size:10.5px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.04em;
     text-transform:uppercase;
-    letter-spacing:.08em;
     color:var(--ink-soft);
-    margin-bottom:4px;
-    font-family:'IBM Plex Mono', monospace;
+    margin-bottom:6px;
   }
   select, input{
     width:100%;
-    padding:9px 10px;
-    border:1px solid var(--linha);
-    border-radius:2px;
+    padding:11px 12px;
+    border:1.5px solid var(--line);
+    border-radius:9px;
     background:#fff;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:14px;
+    font-family:'Inter', sans-serif;
+    font-size:14.5px;
     color:var(--ink);
   }
   select:disabled, input:disabled{opacity:.5;}
-  select:focus, input:focus{outline:2px solid var(--route);outline-offset:1px;}
+  select:focus, input:focus{outline:none; border-color:var(--pink);}
+  .status-line{font-size:12.5px; color:var(--ink-soft); margin:10px 2px 0;}
+  .status-line.erro{color:var(--red); font-weight:600;}
 
-  /* ---------- paradas / cards de input ---------- */
+  /* ---------------- cards de input ---------------- */
   #cardsInput{display:none;}
-  .parada{
-    background:#fff;
-    border:1px solid var(--linha);
-    border-radius:2px;
-    padding:16px 18px;
-    margin-bottom:12px;
-  }
-  .parada .titulo{
-    font-family:'Special Elite', monospace;
+  .secao-titulo{
+    font-family:'Poppins', sans-serif;
     font-size:13px;
-    color:var(--route);
-    margin:0 0 12px;
-    display:flex;
-    align-items:baseline;
-    gap:8px;
+    font-weight:700;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin:26px 2px 12px;
   }
-  .parada .titulo .num{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    background:var(--route-soft);
-    color:var(--route);
-    padding:2px 6px;
-    border-radius:2px;
+  .paradas-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:6px;}
+  .parada{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 4px 16px rgba(20,10,30,.06);
+    padding:16px 18px 18px;
   }
-  .parada .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .campo{margin-bottom:8px;}
+  .parada-head{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .icon-badge{
+    width:36px;height:36px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .icon-badge svg{width:18px;height:18px;}
+  .parada-head .titulo{font-family:'Poppins',sans-serif; font-weight:600; font-size:14.5px;}
+  .parada .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .campo{margin-bottom:0;}
 
   button#btnGerar{
     width:100%;
-    padding:14px;
-    background:var(--ink);
-    color:var(--paper-2);
+    padding:15px;
+    background:linear-gradient(100deg, var(--dark1) 0%, var(--dark2) 55%, var(--pink) 130%);
+    color:#fff;
     border:none;
-    border-radius:2px;
-    font-family:'Special Elite', monospace;
-    font-size:14px;
-    letter-spacing:.04em;
+    border-radius:11px;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    letter-spacing:.02em;
     cursor:pointer;
-    margin-top:4px;
+    margin-top:18px;
+    box-shadow:0 6px 18px rgba(225,20,126,.28);
   }
-  button#btnGerar:disabled{opacity:.5;}
+  button#btnGerar:disabled{opacity:.5; box-shadow:none;}
 
-  /* ---------- resultado ---------- */
-  #resultado{display:none;margin-top:20px;}
-  .carimbo{
-    width:150px;height:150px;
-    border:3px double currentColor;
-    border-radius:50%;
+  /* ---------------- resultado ---------------- */
+  #resultado{display:none;}
+
+  .veredito{
+    border-radius:14px;
+    padding:20px 22px;
     display:flex;
     align-items:center;
-    justify-content:center;
-    text-align:center;
-    font-family:'Special Elite', monospace;
-    font-size:16px;
-    line-height:1.3;
-    transform:rotate(-6deg);
-    margin:8px auto 22px;
-    padding:10px;
+    gap:16px;
+    margin:8px 0 8px;
   }
-  .carimbo.ok{color:var(--ok);}
-  .carimbo.atencao{color:var(--atencao);}
-  .carimbo.risco{color:var(--risco);}
+  .veredito.ok{background:var(--green-bg); color:var(--green);}
+  .veredito.atencao{background:var(--orange-bg); color:var(--orange);}
+  .veredito.risco{background:var(--red-bg); color:var(--red);}
+  .veredito .ic{
+    width:46px;height:46px;border-radius:50%;
+    background:rgba(255,255,255,.6);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .veredito .ic svg{width:24px;height:24px;}
+  .veredito .txt .rotulo{font-family:'Poppins',sans-serif; font-weight:700; font-size:17px;}
+  .veredito .txt .desc{font-size:12.5px; opacity:.85; margin-top:2px; color:var(--ink-soft);}
 
-  .secao-resultado{margin-bottom:22px;}
-  .secao-resultado h2{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.1em;
-    color:var(--ink-soft);
-    border-bottom:1px solid var(--linha);
-    padding-bottom:6px;
-    margin:0 0 12px;
+  /* KPI row (individual) — uma linha só */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:10px;
   }
+  .kpi-card{
+    background:var(--card);
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(20,10,30,.06);
+    padding:14px 12px;
+    text-align:left;
+  }
+  .kpi-card .lbl{font-size:10.5px; color:var(--ink-soft); font-weight:600; line-height:1.25; min-height:26px;}
+  .kpi-card .val{font-family:'Poppins',sans-serif; font-size:19px; font-weight:700; color:var(--blue); margin-top:4px;}
 
-  .metrica{margin-bottom:10px;}
-  .metrica-topo{
-    display:flex;
-    justify-content:space-between;
-    font-size:12.5px;
-    margin-bottom:3px;
+  /* comparativo Regional x Nacional lado a lado */
+  .comp-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .comp-card{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 4px 16px rgba(20,10,30,.06);
+    padding:16px 18px;
   }
-  .metrica-topo .nome{color:var(--ink-soft);}
-  .metrica-topo .valor{font-family:'IBM Plex Mono',monospace;font-weight:600;}
-  .metrica-track{
-    position:relative;
-    height:8px;
-    background:var(--route-soft);
-    border-radius:4px;
-    overflow:hidden;
-  }
-  .metrica-fill{
-    position:absolute; top:0; left:0; bottom:0;
-    border-radius:4px;
-  }
-  .metrica-fill.ok{background:var(--ok);}
-  .metrica-fill.atencao{background:var(--atencao);}
-  .metrica-fill.risco{background:var(--risco);}
-  .metrica-centro{
-    position:absolute; top:-2px; bottom:-2px; left:50%;
-    width:2px; background:var(--ink);
-    opacity:.55;
-  }
-  .metrica-track.simples .metrica-fill{background:var(--route);}
+  .comp-card .comp-titulo{font-family:'Poppins',sans-serif; font-weight:600; font-size:13.5px; margin-bottom:12px;}
+  .comp-lado{margin-bottom:12px;}
+  .comp-lado:last-child{margin-bottom:0;}
+  .comp-lado-head{display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px;}
+  .comp-lado-head .nome{color:var(--ink-soft); font-weight:600; text-transform:uppercase; letter-spacing:.03em; font-size:10.5px;}
+  .comp-lado-head .valor{font-family:'IBM Plex Mono',monospace; font-weight:600;}
+  .comp-track{position:relative; height:7px; background:#EEF0F3; border-radius:4px; overflow:hidden;}
+  .comp-fill{position:absolute; top:0; left:0; bottom:0; border-radius:4px;}
+  .comp-fill.ok{background:var(--green);}
+  .comp-fill.atencao{background:var(--orange);}
+  .comp-fill.risco{background:var(--red);}
+  .comp-centro{position:absolute; top:-2px; bottom:-2px; left:50%; width:2px; background:var(--ink); opacity:.35;}
 
-  .gap-linha{
-    display:flex;
-    justify-content:space-between;
-    font-size:13px;
-    padding:6px 0;
-    border-bottom:1px dashed var(--linha);
+  /* gaps */
+  .gap-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;}
+  .gap-card{
+    background:var(--card);
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(20,10,30,.06);
+    padding:14px 16px;
+    display:flex; align-items:center; gap:12px;
   }
-  .gap-linha .nome{color:var(--ink-soft);}
-  .gap-linha .valor{font-family:'IBM Plex Mono',monospace;font-weight:600;}
+  .gap-card .icon-badge{width:34px;height:34px;border-radius:9px;}
+  .gap-card .txt .lbl{font-size:10.5px; color:var(--ink-soft); font-weight:600;}
+  .gap-card .txt .val{font-family:'Poppins',sans-serif; font-weight:700; font-size:16.5px; margin-top:2px;}
 
-  @media (max-width:480px){
-    .selecao, .parada .grid2{grid-template-columns:1fr;}
-    .carimbo{width:130px;height:130px;font-size:14px;}
+  @media (max-width:720px){
+    .filtros-grid, .paradas-grid, .comp-grid, .gap-grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(3, 1fr);}
+    .parada .grid2{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:420px){
+    .kpi-row{grid-template-columns:repeat(2, 1fr);}
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="ticket-head">
-    <div class="eyebrow">Somos Educação · Ficha de Rota</div>
-    <h1>Calculadora de Performance</h1>
-    <div class="subline">Selecione gerente e consultor, registre os números do ciclo e receba o diagnóstico da parada.</div>
-
-    <p class="status-line" id="loadingMsg">Carregando lista de gerentes...</p>
-    <p class="status-line erro" id="erroCarregamento" style="display:none;"></p>
-
-    <div class="selecao">
-      <div class="campo">
-        <label for="selectGerente">Gerente</label>
-        <select id="selectGerente" disabled>
-          <option value="">Carregando...</option>
-        </select>
-      </div>
-      <div class="campo">
-        <label for="selectConsultor">Consultor</label>
-        <select id="selectConsultor" disabled>
-          <option value="">Selecione o gerente</option>
-        </select>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="logo-chip"><img src="data:image/png;base64,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" alt="Somos Educação"></div>
+      <div class="topbar-titles">
+        <div class="topbar-eyebrow">Painel Comercial · Liderança</div>
+        <div class="topbar-title">Calculadora de Performance</div>
+        <div class="topbar-sub">Selecione gerente e consultor, registre os números do ciclo e veja o diagnóstico.</div>
       </div>
     </div>
   </div>
 
-  <div id="cardsInput">
+  <div class="wrap">
 
-    <div class="parada">
-      <p class="titulo"><span class="num">01</span> Carteira &amp; visitas</p>
-      <div class="grid2">
-        <div class="campo"><label for="carteira">Carteira (escolas)</label><input id="carteira" type="number"></div>
-        <div class="campo"><label for="escolasVisitadas">Escolas visitadas</label><input id="escolasVisitadas" type="number"></div>
+    <div class="card-filtros">
+      <p class="status-line" id="loadingMsg">Carregando lista de gerentes...</p>
+      <p class="status-line erro" id="erroCarregamento" style="display:none;"></p>
+      <div class="filtros-grid">
+        <div class="campo">
+          <label for="selectGerente">Gerente</label>
+          <select id="selectGerente" disabled><option value="">Carregando...</option></select>
+        </div>
+        <div class="campo">
+          <label for="selectConsultor">Consultor</label>
+          <select id="selectConsultor" disabled><option value="">Selecione o gerente</option></select>
+        </div>
       </div>
     </div>
 
-    <div class="parada">
-      <p class="titulo"><span class="num">02</span> Propostas</p>
-      <div class="grid2">
-        <div class="campo"><label for="propostasQtd">Qtd</label><input id="propostasQtd" type="number"></div>
-        <div class="campo"><label for="propostasRs">R$</label><input id="propostasRs" type="number" step="0.01"></div>
+    <div id="cardsInput">
+      <p class="secao-titulo">Dados do ciclo</p>
+      <div class="paradas-grid">
+
+        <div class="parada">
+          <div class="parada-head">
+            <div class="icon-badge" style="background:var(--blue-bg);color:var(--blue);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6-9 6-9-6z"/><path d="M3 10v6l9 6 9-6v-6"/></svg>
+            </div>
+            <div class="titulo">Carteira &amp; visitas</div>
+          </div>
+          <div class="grid2">
+            <div class="campo"><label for="carteira">Carteira (escolas)</label><input id="carteira" type="number"></div>
+            <div class="campo"><label for="escolasVisitadas">Escolas visitadas</label><input id="escolasVisitadas" type="number"></div>
+          </div>
+        </div>
+
+        <div class="parada">
+          <div class="parada-head">
+            <div class="icon-badge" style="background:var(--purple-bg);color:var(--purple);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12l3 3 6-6"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+            </div>
+            <div class="titulo">Propostas</div>
+          </div>
+          <div class="grid2">
+            <div class="campo"><label for="propostasQtd">Qtd</label><input id="propostasQtd" type="number"></div>
+            <div class="campo"><label for="propostasRs">R$</label><input id="propostasRs" type="number" step="0.01"></div>
+          </div>
+        </div>
+
+        <div class="parada">
+          <div class="parada-head">
+            <div class="icon-badge" style="background:var(--green-bg);color:var(--green);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/></svg>
+            </div>
+            <div class="titulo">Contratos emitidos</div>
+          </div>
+          <div class="grid2">
+            <div class="campo"><label for="contratosQtd">Qtd</label><input id="contratosQtd" type="number"></div>
+            <div class="campo"><label for="contratosRs">R$</label><input id="contratosRs" type="number" step="0.01"></div>
+          </div>
+        </div>
+
+        <div class="parada">
+          <div class="parada-head">
+            <div class="icon-badge" style="background:var(--orange-bg);color:var(--orange);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/></svg>
+            </div>
+            <div class="titulo">Resultado &amp; meta</div>
+          </div>
+          <div class="grid2">
+            <div class="campo"><label for="resultadoQtd">Resultado Qtd</label><input id="resultadoQtd" type="number"></div>
+            <div class="campo"><label for="resultadoRs">Resultado R$</label><input id="resultadoRs" type="number" step="0.01"></div>
+          </div>
+          <div class="campo" style="margin-top:10px;"><label for="metaAnual">Meta anual (R$)</label><input id="metaAnual" type="number" step="0.01"></div>
+        </div>
+
       </div>
+
+      <button id="btnGerar" onclick="gerarDiagnostico()">Gerar diagnóstico</button>
+      <p class="status-line" id="loadingEnvio" style="display:none;">Calculando e salvando...</p>
+      <p class="status-line erro" id="erroEnvio" style="display:none;"></p>
     </div>
 
-    <div class="parada">
-      <p class="titulo"><span class="num">03</span> Contratos emitidos</p>
-      <div class="grid2">
-        <div class="campo"><label for="contratosQtd">Qtd</label><input id="contratosQtd" type="number"></div>
-        <div class="campo"><label for="contratosRs">R$</label><input id="contratosRs" type="number" step="0.01"></div>
+    <div id="resultado">
+
+      <div class="veredito" id="veredito">
+        <div class="ic" id="veredicoIcone"></div>
+        <div class="txt">
+          <div class="rotulo" id="veredictoTexto">NO RITMO</div>
+          <div class="desc" id="veredictoDesc">Média de atingimento de meta vs. Regional/Nacional</div>
+        </div>
       </div>
+
+      <p class="secao-titulo">Individual</p>
+      <div class="kpi-row" id="blocoIndividual"></div>
+
+      <p class="secao-titulo">Comparado a Regional × Nacional</p>
+      <div class="comp-grid" id="blocoComparativo"></div>
+
+      <p class="secao-titulo">Gap de visitas</p>
+      <div class="gap-grid" id="blocoGap"></div>
+
     </div>
 
-    <div class="parada">
-      <p class="titulo"><span class="num">04</span> Resultado &amp; meta</p>
-      <div class="grid2">
-        <div class="campo"><label for="resultadoQtd">Resultado Qtd</label><input id="resultadoQtd" type="number"></div>
-        <div class="campo"><label for="resultadoRs">Resultado R$</label><input id="resultadoRs" type="number" step="0.01"></div>
-      </div>
-      <div class="campo"><label for="metaAnual">Meta anual (R$)</label><input id="metaAnual" type="number" step="0.01"></div>
-    </div>
-
-    <button id="btnGerar" onclick="gerarDiagnostico()">Carimbar diagnóstico</button>
-    <p class="status-line" id="loadingEnvio" style="display:none;">Calculando e salvando...</p>
-    <p class="status-line erro" id="erroEnvio" style="display:none;"></p>
   </div>
-
-  <div id="resultado">
-    <div class="carimbo" id="carimboVeredito">NO RITMO</div>
-
-    <div class="secao-resultado">
-      <h2>Individual</h2>
-      <div id="blocoIndividual"></div>
-    </div>
-
-    <div class="secao-resultado">
-      <h2>Comparado ao Regional (100% = na régua)</h2>
-      <div id="blocoRegional"></div>
-    </div>
-
-    <div class="secao-resultado">
-      <h2>Comparado ao Nacional (100% = na régua)</h2>
-      <div id="blocoNacional"></div>
-    </div>
-
-    <div class="secao-resultado">
-      <h2>Gap de visitas</h2>
-      <div id="blocoGap"></div>
-    </div>
-  </div>
-
-</div>
 
 <script>
 // ============================================================
@@ -392,34 +425,41 @@ function classificarRatio(v){
   return 'risco';
 }
 
-function metricaRatio(container, label, valor){
-  const status = classificarRatio(valor);
-  const pctLargura = Math.min(Math.max(valor,0), 2) / 2 * 100;
+function kpiCard(container, label, valorPct){
   const div = document.createElement('div');
-  div.className = 'metrica';
+  div.className = 'kpi-card';
+  div.innerHTML = `<div class="lbl">${label}</div><div class="val">${(valorPct*100).toFixed(1)}%</div>`;
+  container.appendChild(div);
+}
+
+function comparativoCard(container, label, regValor, nacValor){
+  const stReg = classificarRatio(regValor);
+  const stNac = classificarRatio(nacValor);
+  const pctReg = Math.min(Math.max(regValor,0), 2) / 2 * 100;
+  const pctNac = Math.min(Math.max(nacValor,0), 2) / 2 * 100;
+  const div = document.createElement('div');
+  div.className = 'comp-card';
   div.innerHTML = `
-    <div class="metrica-topo"><span class="nome">${label}</span><span class="valor">${(valor*100).toFixed(0)}%</span></div>
-    <div class="metrica-track">
-      <div class="metrica-centro"></div>
-      <div class="metrica-fill ${status}" style="width:${pctLargura}%"></div>
+    <div class="comp-titulo">${label}</div>
+    <div class="comp-lado">
+      <div class="comp-lado-head"><span class="nome">Regional</span><span class="valor">${(regValor*100).toFixed(0)}%</span></div>
+      <div class="comp-track"><div class="comp-centro"></div><div class="comp-fill ${stReg}" style="width:${pctReg}%"></div></div>
+    </div>
+    <div class="comp-lado">
+      <div class="comp-lado-head"><span class="nome">Nacional</span><span class="valor">${(nacValor*100).toFixed(0)}%</span></div>
+      <div class="comp-track"><div class="comp-centro"></div><div class="comp-fill ${stNac}" style="width:${pctNac}%"></div></div>
     </div>`;
   container.appendChild(div);
 }
 
-function metricaSimples(container, label, valor){
-  const pct = Math.min(Math.max(valor,0),1) * 100;
+function gapCard(container, label, valor, cor, corBg){
   const div = document.createElement('div');
-  div.className = 'metrica';
+  div.className = 'gap-card';
   div.innerHTML = `
-    <div class="metrica-topo"><span class="nome">${label}</span><span class="valor">${(valor*100).toFixed(1)}%</span></div>
-    <div class="metrica-track simples"><div class="metrica-fill" style="width:${pct}%"></div></div>`;
-  container.appendChild(div);
-}
-
-function linhaGap(container, label, valor){
-  const div = document.createElement('div');
-  div.className = 'gap-linha';
-  div.innerHTML = `<span class="nome">${label}</span><span class="valor">${formatarNumero(valor)}</span>`;
+    <div class="icon-badge" style="background:${corBg};color:${cor};">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="txt"><div class="lbl">${label}</div><div class="val">${formatarNumero(valor)}</div></div>`;
   container.appendChild(div);
 }
 
@@ -482,52 +522,49 @@ function renderizarDiagnostico(json){
 
   const blocoIndividual = document.getElementById('blocoIndividual');
   blocoIndividual.innerHTML = '';
-  metricaSimples(blocoIndividual, '% Escolas Visitadas', ind.pctEscolasVisitadas);
-  metricaSimples(blocoIndividual, '% Conv. Propostas', ind.pctConvPropostas);
-  metricaSimples(blocoIndividual, '% Conv. Contratos', ind.pctConvContratos);
-  metricaSimples(blocoIndividual, '% Conv. Resultado (Qtd)', ind.pctConvResultadoQtd);
-  metricaSimples(blocoIndividual, '% Conv. Resultado (R$)', ind.pctConvResultadoRs);
-  metricaSimples(blocoIndividual, '% Meta Anual', ind.pctMetaAnual);
+  kpiCard(blocoIndividual, '% Escolas Visitadas', ind.pctEscolasVisitadas);
+  kpiCard(blocoIndividual, '% Conv. Propostas', ind.pctConvPropostas);
+  kpiCard(blocoIndividual, '% Conv. Contratos', ind.pctConvContratos);
+  kpiCard(blocoIndividual, '% Conv. Result. (Qtd)', ind.pctConvResultadoQtd);
+  kpiCard(blocoIndividual, '% Conv. Result. (R$)', ind.pctConvResultadoRs);
+  kpiCard(blocoIndividual, '% Meta Anual', ind.pctMetaAnual);
 
-  const blocoRegional = document.getElementById('blocoRegional');
-  blocoRegional.innerHTML = '';
-  metricaRatio(blocoRegional, 'Escolas Visitadas', reg.escolasVisitas);
-  metricaRatio(blocoRegional, 'Proposta', reg.proposta);
-  metricaRatio(blocoRegional, 'Contratos Emitidos', reg.contratosEmitidos);
-  metricaRatio(blocoRegional, 'Contratos Assinados', reg.contratosAssinados);
-  metricaRatio(blocoRegional, 'Conversão', reg.conversao);
-  metricaRatio(blocoRegional, 'Meta', reg.meta);
-
-  const blocoNacional = document.getElementById('blocoNacional');
-  blocoNacional.innerHTML = '';
-  metricaRatio(blocoNacional, 'Escolas Visitadas', nac.escolasVisitas);
-  metricaRatio(blocoNacional, 'Proposta', nac.proposta);
-  metricaRatio(blocoNacional, 'Contratos Emitidos', nac.contratosEmitidos);
-  metricaRatio(blocoNacional, 'Contratos Assinados', nac.contratosAssinados);
-  metricaRatio(blocoNacional, 'Conversão', nac.conversao);
-  metricaRatio(blocoNacional, 'Meta', nac.meta);
+  const blocoComparativo = document.getElementById('blocoComparativo');
+  blocoComparativo.innerHTML = '';
+  comparativoCard(blocoComparativo, 'Escolas Visitadas', reg.escolasVisitas, nac.escolasVisitas);
+  comparativoCard(blocoComparativo, 'Proposta', reg.proposta, nac.proposta);
+  comparativoCard(blocoComparativo, 'Contratos Emitidos', reg.contratosEmitidos, nac.contratosEmitidos);
+  comparativoCard(blocoComparativo, 'Contratos Assinados', reg.contratosAssinados, nac.contratosAssinados);
+  comparativoCard(blocoComparativo, 'Conversão', reg.conversao, nac.conversao);
+  comparativoCard(blocoComparativo, 'Meta', reg.meta, nac.meta);
 
   const blocoGap = document.getElementById('blocoGap');
   blocoGap.innerHTML = '';
-  linhaGap(blocoGap, 'Gap de visitas (Regional)', gap.visitasRegional);
-  linhaGap(blocoGap, 'Gap de visitas (Nacional)', gap.visitasNacional);
-  linhaGap(blocoGap, 'Gap c/ crescimento (Regional)', gap.visitasRegionalCrescimento);
-  linhaGap(blocoGap, 'Gap c/ crescimento (Nacional)', gap.visitasNacionalCrescimento);
+  gapCard(blocoGap, 'Gap Visitas (Regional)', gap.visitasRegional, 'var(--blue)', 'var(--blue-bg)');
+  gapCard(blocoGap, 'Gap Visitas (Nacional)', gap.visitasNacional, 'var(--purple)', 'var(--purple-bg)');
+  gapCard(blocoGap, 'Gap c/ Cresc. (Regional)', gap.visitasRegionalCrescimento, 'var(--orange)', 'var(--orange-bg)');
+  gapCard(blocoGap, 'Gap c/ Cresc. (Nacional)', gap.visitasNacionalCrescimento, 'var(--red)', 'var(--red-bg)');
 
-  // veredito = média dos ratios de Meta (Regional + Nacional)
   const mediaMeta = (reg.meta + nac.meta) / 2;
-  const carimbo = document.getElementById('carimboVeredito');
-  carimbo.className = 'carimbo';
+  const veredito = document.getElementById('veredito');
+  const icone = document.getElementById('veredicoIcone');
+  const texto = document.getElementById('veredictoTexto');
+  veredito.className = 'veredito';
+  let svgIcone = '';
   if(mediaMeta >= 1){
-    carimbo.classList.add('ok');
-    carimbo.textContent = 'NO RITMO';
+    veredito.classList.add('ok');
+    texto.textContent = 'No ritmo';
+    svgIcone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
   } else if(mediaMeta >= 0.8){
-    carimbo.classList.add('atencao');
-    carimbo.textContent = 'ATENÇÃO NA ROTA';
+    veredito.classList.add('atencao');
+    texto.textContent = 'Atenção na rota';
+    svgIcone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>';
   } else {
-    carimbo.classList.add('risco');
-    carimbo.textContent = 'ABAIXO DA ROTA';
+    veredito.classList.add('risco');
+    texto.textContent = 'Abaixo da rota';
+    svgIcone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6"/><path d="M9 9l6 6"/></svg>';
   }
+  icone.innerHTML = svgIcone;
 }
 </script>
 </body>
