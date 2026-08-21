@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dicionário — Somos Educação</title>
+<title>Calculadora RVV — Somos Educação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -244,18 +244,49 @@
     .kpi-row{grid-template-columns:repeat(2, 1fr);}
   }
 
-  /* ---------------- específico da Página 3 ---------------- */
-  .busca-dicionario{margin-bottom:18px;}
-  .termo-card{
+  /* ---------------- específico da Calculadora RVV ---------------- */
+  .rvv-salario{
     background:var(--card);
-    border-radius:12px;
-    box-shadow:0 4px 14px rgba(20,10,30,.06);
-    padding:14px 18px;
-    margin-bottom:10px;
+    border-radius:14px;
+    box-shadow:0 6px 24px rgba(20,10,30,.08);
+    padding:18px 20px;
+    margin-bottom:20px;
   }
-  .termo-card .termo{font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; color:var(--pink); margin-bottom:4px;}
-  .termo-card .definicao{font-size:13.5px; color:var(--ink); line-height:1.5;}
-  .termo-card .definicao.pendente{color:var(--ink-soft); font-style:italic;}
+  .rvv-box{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 6px 20px rgba(20,10,30,.08);
+    padding:20px 22px;
+    margin-bottom:20px;
+  }
+  .rvv-box-titulo{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:16px;
+  }
+  .rvv-box-titulo .titulo{font-family:'Poppins',sans-serif; font-weight:700; font-size:15.5px;}
+  .rvv-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;}
+  .rvv-grid.tres{grid-template-columns:1fr 1fr 1fr;}
+  .rvv-resultado{
+    border-radius:12px;
+    padding:16px 18px;
+    background:var(--green-bg);
+    color:var(--green);
+    display:flex; align-items:center; gap:14px;
+  }
+  .rvv-resultado.vazio{background:#F1F2F5; color:var(--ink-soft);}
+  .rvv-resultado .valor{font-family:'Poppins',sans-serif; font-weight:800; font-size:24px;}
+  .rvv-resultado .desc{font-size:12px; margin-top:2px; opacity:.9;}
+  .rvv-resultado .ic{
+    width:42px;height:42px;border-radius:50%;
+    background:rgba(255,255,255,.6);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .rvv-resultado .ic svg{width:22px;height:22px;}
+
+  @media (max-width:560px){
+    .rvv-grid, .rvv-grid.tres{grid-template-columns:1fr;}
+  }
 </style>
 </head>
 <body>
@@ -265,80 +296,254 @@
       <div class="logo-chip"><img src="data:image/png;base64,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" alt="Somos Educação"></div>
       <div class="topbar-titles">
         <div class="topbar-eyebrow">Painel Comercial · Liderança</div>
-        <div class="topbar-title">Dicionário</div>
-        <div class="topbar-sub">Glossário de termos comerciais usados no ciclo.</div>
+        <div class="topbar-title">Calculadora RVV</div>
+        <div class="topbar-sub">Estime o ganho da Remuneração Variável de Vendas por trimestre e por ano.</div>
       </div>
       <div class="topbar-nav">
         <a href="index.html">Performance</a>
         <a href="plano-acao.html">Plano de Ação</a>
-        <a href="dicionario.html" class="ativo">Dicionário</a>
-        <a href="rvv.html">Calculadora RVV</a>
+        <a href="dicionario.html">Dicionário</a>
+        <a href="rvv.html" class="ativo">Calculadora RVV</a>
       </div>
     </div>
   </div>
 
   <div class="wrap">
-    <div class="card-filtros busca-dicionario">
-      <div class="campo">
-        <label for="buscaTermo">Buscar termo</label>
-        <input id="buscaTermo" type="text" placeholder="Ex: cobertura, F7, Frutas Baixas..." oninput="filtrarTermos()">
-      </div>
-    </div>
 
-    <p class="status-line" id="loadingMsg">Carregando glossário...</p>
+    <p class="status-line" id="loadingMsg">Carregando régua de RVV...</p>
     <p class="status-line erro" id="erroCarregamento" style="display:none;"></p>
 
-    <div id="listaTermos"></div>
+    <div id="conteudoRvv" style="display:none;">
+
+      <div class="rvv-salario">
+        <div class="campo">
+          <label for="salarioBruto">Salário Bruto (R$)</label>
+          <input id="salarioBruto" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this)">
+        </div>
+      </div>
+
+      <div class="rvv-box">
+        <div class="rvv-box-titulo">
+          <div class="icon-badge" style="background:var(--blue-bg);color:var(--blue);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></svg>
+          </div>
+          <div class="titulo">RVV Trimestral</div>
+        </div>
+        <div class="rvv-grid tres">
+          <div class="campo">
+            <label for="triSelect">Trimestre</label>
+            <select id="triSelect" onchange="calcularTrimestre()">
+              <option value="1º Trimestre">1º Trimestre</option>
+              <option value="2º Trimestre">2º Trimestre</option>
+              <option value="3º Trimestre">3º Trimestre</option>
+              <option value="4º Trimestre">4º Trimestre</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="triMeta">Meta do Trimestre (R$)</label>
+            <input id="triMeta" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularTrimestre();">
+          </div>
+          <div class="campo">
+            <label for="triResultado">Resultado do Trimestre (R$)</label>
+            <input id="triResultado" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularTrimestre();">
+          </div>
+        </div>
+        <div class="rvv-resultado vazio" id="triResultadoBox">
+          <div class="ic" id="triIcone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div>
+          <div>
+            <div class="valor" id="triValor">Preencha os campos</div>
+            <div class="desc" id="triDesc">Informe meta e resultado do trimestre para calcular.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rvv-box">
+        <div class="rvv-box-titulo">
+          <div class="icon-badge" style="background:var(--purple-bg);color:var(--purple);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <div class="titulo">RVV Anual</div>
+        </div>
+        <div class="rvv-grid tres">
+          <div class="campo">
+            <label for="anualMeta">Meta Anual (R$)</label>
+            <input id="anualMeta" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularAnual();">
+          </div>
+          <div class="campo">
+            <label for="anualTempo">Tempo de Contrato (anos)</label>
+            <input id="anualTempo" type="number" min="1" step="1" placeholder="Ex: 2" oninput="calcularAnual();">
+          </div>
+          <div class="campo">
+            <label for="anualResultado">Resultado Anual (R$)</label>
+            <input id="anualResultado" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularAnual();">
+          </div>
+        </div>
+        <div class="rvv-resultado vazio" id="anualResultadoBox">
+          <div class="ic" id="anualIcone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div>
+          <div>
+            <div class="valor" id="anualValor">Preencha os campos</div>
+            <div class="desc" id="anualDesc">Informe meta, tempo de contrato e resultado anual para calcular.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA-Ou4BX6K-eQ2A7IbpcmMIo5yhTggVS27eLnJw79SXQuLm2-yhjqbSYbM2Vtih1wpjQ/exec";
 
-let todosTermos = [];
+let tabelaTrimestre = [];
+let tabelaAnual = [];
 
-document.addEventListener('DOMContentLoaded', carregarDicionario);
+document.addEventListener('DOMContentLoaded', carregarTabelas);
 
-async function carregarDicionario(){
+async function carregarTabelas(){
   const loadingMsg = document.getElementById('loadingMsg');
   const erroEl = document.getElementById('erroCarregamento');
   try{
-    const resp = await fetch(SCRIPT_URL + '?action=dicionario');
+    const resp = await fetch(SCRIPT_URL + '?action=rvv');
     const json = await resp.json();
-    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao carregar dicionário');
-    todosTermos = json.termos.sort(function(a,b){ return a.termo.localeCompare(b.termo, 'pt-BR'); });
+    if(json.status !== 'ok') throw new Error(json.mensagem || 'Erro ao carregar régua de RVV');
+    tabelaTrimestre = json.trimestre;
+    tabelaAnual = json.anual;
     loadingMsg.style.display = 'none';
-    renderizarTermos(todosTermos);
+    document.getElementById('conteudoRvv').style.display = 'block';
   }catch(err){
     loadingMsg.style.display = 'none';
     erroEl.style.display = 'block';
-    erroEl.textContent = 'Falha ao carregar o dicionário: ' + err.message;
+    erroEl.textContent = 'Falha ao carregar a régua de RVV: ' + err.message;
   }
 }
 
-function renderizarTermos(lista){
-  const container = document.getElementById('listaTermos');
-  container.innerHTML = '';
-  if(lista.length === 0){
-    container.innerHTML = '<p class="status-line">Nenhum termo encontrado.</p>';
+// ---------- máscara de moeda (digitou 6000 -> mostra 6.000,00) ----------
+function mascaraMoeda(input){
+  let digitos = input.value.replace(/\D/g, '');
+  digitos = digitos.replace(/^0+(?=\d)/, '');
+  if(digitos === ''){
+    input.value = '';
+    input.dataset.valor = '0';
     return;
   }
-  lista.forEach(function(item){
-    const pendente = !item.definicao || item.definicao.indexOf('DEFINIÇÃO PENDENTE') !== -1;
-    const div = document.createElement('div');
-    div.className = 'termo-card';
-    div.innerHTML = `<div class="termo">${item.termo}</div><div class="definicao ${pendente ? 'pendente' : ''}">${pendente ? 'Definição pendente de cadastro.' : item.definicao}</div>`;
-    container.appendChild(div);
-  });
+  const numero = parseInt(digitos, 10);
+  input.dataset.valor = String(numero);
+  input.value = numero.toLocaleString('pt-BR') + ',00';
 }
 
-function filtrarTermos(){
-  const q = document.getElementById('buscaTermo').value.trim().toLowerCase();
-  if(!q){ renderizarTermos(todosTermos); return; }
-  const filtrados = todosTermos.filter(function(item){
-    return item.termo.toLowerCase().indexOf(q) !== -1 || item.definicao.toLowerCase().indexOf(q) !== -1;
-  });
-  renderizarTermos(filtrados);
+function valorNumerico(input){
+  return Number(input.dataset.valor || '0');
 }
+
+// ---------- parser de faixas tipo "60,00% a 69,99%" / "< 59,99%" / "900%+" ----------
+function parseFaixa(faixa){
+  const limpa = faixa.trim();
+  if(limpa.indexOf('a') !== -1 && limpa.indexOf('%') !== -1 && !limpa.startsWith('<')){
+    const partes = limpa.split(' a ');
+    if(partes.length === 2){
+      return { min: paraNumero(partes[0]), max: paraNumero(partes[1]) };
+    }
+  }
+  if(limpa.startsWith('<')){
+    return { min: -Infinity, max: paraNumero(limpa.replace('<','')) };
+  }
+  if(limpa.indexOf('+') !== -1){
+    return { min: paraNumero(limpa.replace('+','')), max: Infinity };
+  }
+  return { min: -Infinity, max: Infinity };
+}
+
+function paraNumero(txt){
+  return parseFloat(txt.replace('%','').replace(/\s/g,'').replace(',', '.'));
+}
+
+function buscarMultiploTrimestre(trimestre, pct){
+  const linha = tabelaTrimestre.find(function(l){
+    if(l.trimestre !== trimestre) return false;
+    const faixa = parseFaixa(l.faixa);
+    return pct >= faixa.min && pct <= faixa.max;
+  });
+  return linha ? linha.multiplo : null;
+}
+
+function buscarMultiploAnual(pct, tempoAnos){
+  const chave = tempoAnos >= 5 ? '5+' : String(Math.max(1, Math.round(tempoAnos)));
+  const linha = tabelaAnual.find(function(l){
+    const faixa = parseFaixa(l.faixa);
+    return pct >= faixa.min && pct <= faixa.max;
+  });
+  return linha ? linha.anos[chave] : null;
+}
+
+function calcularTrimestre(){
+  const salario = valorNumerico(document.getElementById('salarioBruto'));
+  const meta = valorNumerico(document.getElementById('triMeta'));
+  const resultado = valorNumerico(document.getElementById('triResultado'));
+  const trimestre = document.getElementById('triSelect').value;
+  const box = document.getElementById('triResultadoBox');
+  const valorEl = document.getElementById('triValor');
+  const descEl = document.getElementById('triDesc');
+
+  if(!salario || !meta || !resultado){
+    box.className = 'rvv-resultado vazio';
+    valorEl.textContent = 'Preencha os campos';
+    descEl.textContent = 'Informe salário, meta e resultado do trimestre para calcular.';
+    return;
+  }
+
+  const pct = (resultado / meta) * 100;
+  const multiplo = buscarMultiploTrimestre(trimestre, pct);
+
+  if(multiplo === null){
+    box.className = 'rvv-resultado vazio';
+    valorEl.textContent = 'Faixa não encontrada';
+    descEl.textContent = 'Não encontrei uma faixa de atingimento correspondente a ' + pct.toFixed(1) + '%.';
+    return;
+  }
+
+  const ganho = salario * multiplo;
+  box.className = 'rvv-resultado ok';
+  valorEl.textContent = ganho.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  descEl.textContent = 'O valor R$ é a expectativa de ganho da RVV do ' + trimestre + ' (atingimento ' + pct.toFixed(1) + '% · múltiplo ' + multiplo.toString().replace('.',',') + 'x)';
+}
+
+function calcularAnual(){
+  const salario = valorNumerico(document.getElementById('salarioBruto'));
+  const meta = valorNumerico(document.getElementById('anualMeta'));
+  const resultado = valorNumerico(document.getElementById('anualResultado'));
+  const tempoStr = document.getElementById('anualTempo').value;
+  const tempo = Number(tempoStr);
+  const box = document.getElementById('anualResultadoBox');
+  const valorEl = document.getElementById('anualValor');
+  const descEl = document.getElementById('anualDesc');
+
+  if(!salario || !meta || !resultado || !tempo || tempo < 1){
+    box.className = 'rvv-resultado vazio';
+    valorEl.textContent = 'Preencha os campos';
+    descEl.textContent = 'Informe salário, meta anual, tempo de contrato e resultado anual para calcular.';
+    return;
+  }
+
+  const pct = (resultado / meta) * 100;
+  const multiplo = buscarMultiploAnual(pct, tempo);
+
+  if(multiplo === null){
+    box.className = 'rvv-resultado vazio';
+    valorEl.textContent = 'Faixa não encontrada';
+    descEl.textContent = 'Não encontrei uma faixa de atingimento correspondente a ' + pct.toFixed(1) + '%.';
+    return;
+  }
+
+  const ganho = salario * multiplo;
+  box.className = 'rvv-resultado ok';
+  valorEl.textContent = ganho.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  descEl.textContent = 'O valor R$ é a expectativa de ganho da RVV Anual (atingimento ' + pct.toFixed(1) + '% · múltiplo ' + multiplo.toString().replace('.',',') + 'x · ' + tempo + (tempo >= 5 ? '+' : '') + ' ano(s) de contrato)';
+}
+
+document.getElementById('salarioBruto').addEventListener('input', function(){
+  calcularTrimestre();
+  calcularAnual();
+});
 </script>
 </body>
 </html>
