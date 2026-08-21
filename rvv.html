@@ -318,7 +318,7 @@
       <div class="rvv-salario">
         <div class="campo">
           <label for="salarioBruto">Salário Bruto (R$)</label>
-          <input id="salarioBruto" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this)">
+          <input id="salarioBruto" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(event)">
         </div>
       </div>
 
@@ -341,11 +341,11 @@
           </div>
           <div class="campo">
             <label for="triMeta">Meta do Trimestre (R$)</label>
-            <input id="triMeta" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularTrimestre();">
+            <input id="triMeta" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(event); calcularTrimestre();">
           </div>
           <div class="campo">
             <label for="triResultado">Resultado do Trimestre (R$)</label>
-            <input id="triResultado" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularTrimestre();">
+            <input id="triResultado" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(event); calcularTrimestre();">
           </div>
         </div>
         <div class="rvv-resultado vazio" id="triResultadoBox">
@@ -367,7 +367,7 @@
         <div class="rvv-grid tres">
           <div class="campo">
             <label for="anualMeta">Meta Anual (R$)</label>
-            <input id="anualMeta" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularAnual();">
+            <input id="anualMeta" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(event); calcularAnual();">
           </div>
           <div class="campo">
             <label for="anualTempo">Tempo de Contrato (anos)</label>
@@ -375,7 +375,7 @@
           </div>
           <div class="campo">
             <label for="anualResultado">Resultado Anual (R$)</label>
-            <input id="anualResultado" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(this); calcularAnual();">
+            <input id="anualResultado" type="text" inputmode="numeric" placeholder="0,00" oninput="mascaraMoeda(event); calcularAnual();">
           </div>
         </div>
         <div class="rvv-resultado vazio" id="anualResultadoBox">
@@ -418,15 +418,34 @@ async function carregarTabelas(){
 }
 
 // ---------- máscara de moeda (digitou 6000 -> mostra 6.000,00) ----------
-function mascaraMoeda(input){
-  let digitos = input.value.replace(/\D/g, '');
-  digitos = digitos.replace(/^0+(?=\d)/, '');
-  if(digitos === ''){
+function mascaraMoeda(e){
+  const input = e.target;
+  let raw = input.dataset.valor || '';
+
+  if(e.inputType === 'insertText' && e.data && /\d/.test(e.data)){
+    raw += e.data;
+  } else if(e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop'){
+    raw = input.value.replace(/\D/g, '');
+  } else if(e.inputType && e.inputType.indexOf('delete') === 0){
+    raw = raw.slice(0, -1);
+  } else {
+    // fallback pra navegadores/casos sem inputType confiável
+    const digitosAtual = input.value.replace(/\D/g, '');
+    if(digitosAtual.length > raw.length + 2){
+      raw = raw + digitosAtual.slice(raw.length + 2);
+    } else if(digitosAtual.length < raw.length){
+      raw = digitosAtual;
+    }
+  }
+
+  raw = raw.replace(/^0+(?=\d)/, '');
+
+  if(raw === ''){
     input.value = '';
     input.dataset.valor = '0';
     return;
   }
-  const numero = parseInt(digitos, 10);
+  const numero = parseInt(raw, 10);
   input.dataset.valor = String(numero);
   input.value = numero.toLocaleString('pt-BR') + ',00';
 }
